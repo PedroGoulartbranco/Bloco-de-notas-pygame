@@ -5,11 +5,14 @@ import sys
 pygame.init()
 
 # cria a janela
-LARGURA, ALTURA = 800, 600
+LARGURA, ALTURA = 1000, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Bloco de Notas")
 
-fonte_menu = pygame.font.Font(None, 18)
+fonte_menu = pygame.font.SysFont('arial', 15)
+fonte_texto = pygame.font.SysFont('arial', 15)
+
+texto_usuario = "Teste"
 
 def desenhar_texto():
     #Criando texto botoes
@@ -62,14 +65,19 @@ while rodando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             rodando = False
+        if event.type == pygame.KEYDOWN:
+            texto_usuario += event.unicode
 
     posicao_mouse = pygame.mouse.get_pos()
 
     tela.fill("white")  
-    linha = pygame.draw.line(tela, ("gray"), (0, 30), (LARGURA, 30), 2)
+    linha = pygame.draw.line(tela, ("gray"), (0, 30), (LARGURA, 30), 1)
 
     botao_arquivo, botao_editar, botao_formatar, botao_exibir = desenhar_botoes()
     desenhar_texto()
+
+    texto_surface = fonte_texto.render(texto_usuario, True, "black")
+    tela.blit(texto_surface, (4, 40))
 
     pygame.display.flip()   # atualiza a tela
 
