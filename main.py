@@ -94,7 +94,8 @@ while rodando:
         y_distancia += fonte_texto.get_height()
 
     cursor_y = y_distancia - fonte_texto.get_height()
-    cursor_x = onde_digitar.x
+    largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual])
+    cursor_x = onde_digitar.x + largura_texto
 
     linha_texto = pygame.draw.line(tela, "black", (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
 
