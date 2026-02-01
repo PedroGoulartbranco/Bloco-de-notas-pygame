@@ -12,7 +12,9 @@ pygame.display.set_caption("Bloco de Notas")
 fonte_menu = pygame.font.SysFont('arial', 15)
 fonte_texto = pygame.font.SysFont('arial', 15)
 
-texto_usuario = "Teste"
+linhas = [""]
+linha_atual = 0
+onde_digitar = pygame.Rect(3, 40, LARGURA - 3, ALTURA - 40)
 
 def desenhar_texto():
     #Criando texto botoes
@@ -66,7 +68,13 @@ while rodando:
         if event.type == pygame.QUIT:
             rodando = False
         if event.type == pygame.KEYDOWN:
-            texto_usuario += event.unicode
+            if event.key == pygame.K_RETURN:
+                linhas.insert(linha_atual+1, "")
+                linha_atual += 1
+            elif event.key == pygame.K_BACKSPACE:
+                linhas[linha_atual] = linhas[linha_atual][:-1] 
+            else:
+                linhas[linha_atual] += event.unicode
 
     posicao_mouse = pygame.mouse.get_pos()
 
@@ -76,8 +84,19 @@ while rodando:
     botao_arquivo, botao_editar, botao_formatar, botao_exibir = desenhar_botoes()
     desenhar_texto()
 
-    texto_surface = fonte_texto.render(texto_usuario, True, "black")
-    tela.blit(texto_surface, (4, 40))
+    pygame.draw.rect(tela, "blue", onde_digitar) 
+
+    y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
+
+    for linha in linhas:
+        texto_surface = fonte_texto.render(linha, True, "black")
+        tela.blit(texto_surface, (onde_digitar.x, y_distancia))
+        y_distancia += fonte_texto.get_height()
+
+    cursor_y = y_distancia - fonte_texto.get_height()
+    cursor_x = onde_digitar.x
+
+    linha_texto = pygame.draw.line(tela, "black", (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
 
     pygame.display.flip()   # atualiza a tela
 
