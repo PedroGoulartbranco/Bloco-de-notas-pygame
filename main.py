@@ -108,7 +108,6 @@ while rodando:
             cor_piscada = "black"
             piscou = True
             tempo_desligado = tempo_atual
-            print(tempo_desligado)
     else:
         if tempo_atual - tempo_desligado >= tempo_piscada:
             cor_piscada = "white"
