@@ -96,7 +96,11 @@ while rodando:
                 linhas[linha_atual] = linhas[linha_atual][:-1] 
             else:
                 linhas[linha_atual] += event.unicode
-
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if botao_texto_menos.collidepoint(posicao_mouse):
+                tamanho_fonte_texto -= 1
+                print(tamanho_fonte_texto)
+    fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto)
     posicao_mouse = pygame.mouse.get_pos()
 
     tela.fill("white")  
