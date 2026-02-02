@@ -16,6 +16,11 @@ linhas = [""]
 linha_atual = 0
 onde_digitar = pygame.Rect(3, 40, LARGURA - 3, ALTURA - 40)
 
+tempo_piscada = 500
+piscou = False
+tempo_desligado = 0
+cor_piscada = "white"
+
 def desenhar_texto():
     #Criando texto botoes
     texto_arquivo_opcoes =  fonte_menu.render("Menu", True, "black")
@@ -84,7 +89,7 @@ while rodando:
     botao_arquivo, botao_editar, botao_formatar, botao_exibir = desenhar_botoes()
     desenhar_texto()
 
-    pygame.draw.rect(tela, "blue", onde_digitar) 
+    pygame.draw.rect(tela, "white", onde_digitar) 
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
@@ -97,7 +102,20 @@ while rodando:
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual])
     cursor_x = onde_digitar.x + largura_texto
 
-    linha_texto = pygame.draw.line(tela, "black", (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
+    tempo_atual = pygame.time.get_ticks() #Pega o tick atual
+    if piscou == False:
+        if tempo_atual - tempo_desligado >= tempo_piscada:
+            cor_piscada = "black"
+            piscou = True
+            tempo_desligado = tempo_atual
+            print(tempo_desligado)
+    else:
+        if tempo_atual - tempo_desligado >= tempo_piscada:
+            cor_piscada = "white"
+            piscou = False
+            tempo_desligado = tempo_atual
+    linha_texto = pygame.draw.line(tela, cor_piscada, (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
+    
 
     pygame.display.flip()   # atualiza a tela
 
