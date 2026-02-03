@@ -17,6 +17,7 @@ fonte_menu = pygame.font.SysFont('arial', 15)
 fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('arial', tamanho_fonte_aumentar_dominuir)
 fonte_texto_fixo = pygame.font.SysFont('arial', 15)
+fonte_sinal_mais = pygame.font.SysFont('arial', 19) #O sinal de + é muito grande
 
 linhas = [""]
 linhas = [
@@ -35,27 +36,27 @@ def desenhar_texto():
     texto_arquivo_opcoes =  fonte_menu.render("Menu", True, "black")
     texto_editar_opcoes =  fonte_menu.render("Editar", True, "black")
     texto_fonte_menos =  fonte_botao_menos_mais.render("-", True, "black")
-    texto_exibir_opcoes =  fonte_menu.render("Exibir", True, "black")
+    texto_fonte_mais =  fonte_sinal_mais.render("+", True, "black")
     texto_tamanho_atual_fonte = fonte_menu.render(f"{tamanho_fonte_texto}", True, "black")
 
     #Centralizar texto nos botoes
     texto_arquivo_opcoes_coordenada =  texto_arquivo_opcoes.get_rect(center=botao_arquivo.center)
     texto_editar_opcoes_coordenada =  texto_editar_opcoes.get_rect(center=botao_editar.center)
     texto_fonte_menos_coordenada =  texto_fonte_menos.get_rect(center=botao_texto_menos.center)
-    texto_exibir_opcoes_coordenada =  texto_exibir_opcoes.get_rect(center=botao_exibir.center)
+    texto_fonte_mais_coordenada =  texto_fonte_mais.get_rect(center=botao_texto_fonte_mais.center)
 
     texto_tamanho_atual_fonte_coordenada = texto_tamanho_atual_fonte.get_rect(center=caixa_fonte_tamanho.center)
 
     tela.blit(texto_arquivo_opcoes, texto_arquivo_opcoes_coordenada)
     tela.blit(texto_editar_opcoes, texto_editar_opcoes_coordenada)
     tela.blit(texto_fonte_menos, texto_fonte_menos_coordenada)
-    tela.blit(texto_exibir_opcoes, texto_exibir_opcoes_coordenada)
+    tela.blit(texto_fonte_mais, texto_fonte_mais_coordenada)
     tela.blit(texto_tamanho_atual_fonte, texto_tamanho_atual_fonte_coordenada)
 
 def desenhar_botoes():
     posicao_mouse = pygame.mouse.get_pos()
 
-    cor_botao_arquivo = cor_botao_editar = cor_fonte_menos = cor_botao_exibir = cor_fundo_caixa_tamanho_fonte = "white"
+    cor_botao_arquivo = cor_botao_editar = cor_fonte_menos = cor_fonte_mais = cor_fundo_caixa_tamanho_fonte = "white"
 
     #Criando os rects dos botoes
     botao_arquivo = pygame.Rect(0, 10, 70, 20)
@@ -63,7 +64,7 @@ def desenhar_botoes():
     botao_texto_menos = pygame.Rect(200, 5, 25, 25)
     caixa_fonte_tamanho = pygame.Rect(230, 6, 25, 25)
     borda_caixa_fonte_tamanho = pygame.Rect(230, 6, 25, 25)
-    botao_exibir = pygame.Rect(300, 10, 70, 20)
+    botao_texto_fonte_mais = pygame.Rect(265, 5, 25, 25) #Sinal de +
 
     if botao_arquivo.collidepoint(posicao_mouse):
         cor_botao_arquivo = (229, 241, 251)
@@ -71,19 +72,19 @@ def desenhar_botoes():
         cor_botao_editar = (229, 241, 251)
     if botao_texto_menos.collidepoint(posicao_mouse):
         cor_fonte_menos = (229, 241, 251)
-    if botao_exibir.collidepoint(posicao_mouse):
-        cor_botao_exibir = (229, 241, 251)
+    if botao_texto_fonte_mais.collidepoint(posicao_mouse):
+        cor_fonte_mais = (229, 241, 251)
     if caixa_fonte_tamanho.collidepoint(posicao_mouse):
         cor_fundo_caixa_tamanho_fonte = (229, 241, 251)
 
     pygame.draw.rect(tela, cor_botao_arquivo, botao_arquivo)
     pygame.draw.rect(tela, cor_botao_editar, botao_editar)
     pygame.draw.rect(tela, cor_fonte_menos, botao_texto_menos)
-    pygame.draw.rect(tela, cor_botao_exibir, botao_exibir)
+    pygame.draw.rect(tela, cor_fonte_mais, botao_texto_fonte_mais)
     pygame.draw.rect(tela, cor_fundo_caixa_tamanho_fonte, caixa_fonte_tamanho) 
     pygame.draw.rect(tela, "gray", borda_caixa_fonte_tamanho, 1) #Borda caixa
 
-    return botao_arquivo, botao_editar, botao_exibir, botao_texto_menos, caixa_fonte_tamanho
+    return botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho
 
 
 # loop principal
@@ -109,6 +110,10 @@ while rodando:
                 fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
                 linhas[linha_atual]["fonte"] = fonte_texto
                 print(tamanho_fonte_texto)
+            if botao_texto_fonte_mais.collidepoint(posicao_mouse):
+                tamanho_fonte_texto += 1
+                fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
+                linhas[linha_atual]["fonte"] = fonte_texto
 
     fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
@@ -116,7 +121,7 @@ while rodando:
     tela.fill("white")  
     linha = pygame.draw.line(tela, ("gray"), (0, 30), (LARGURA, 30), 1)
 
-    botao_arquivo, botao_editar, botao_exibir, botao_texto_menos, caixa_fonte_tamanho = desenhar_botoes()
+    botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho = desenhar_botoes()
     desenhar_texto()
 
     pygame.draw.rect(tela, "white", onde_digitar) 
