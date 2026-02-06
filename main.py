@@ -9,6 +9,16 @@ LARGURA, ALTURA = 1000, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Bloco de Notas")
 
+#icones
+icone = pygame.image.load("img/icon.ico")
+icone = pygame.transform.scale(icone, (256, 256))
+pygame.display.set_icon(icone)
+
+pygame.display.set_caption("PedroNote")
+
+#Configura o segurar do teclado
+#pygame.key.set_repeat(300, 40)
+
 
 tamanho_fonte_texto = 15
 tamanho_fonte_aumentar_dominuir = 28
@@ -16,12 +26,10 @@ tamanho_fonte_aumentar_dominuir = 28
 fonte_menu = pygame.font.SysFont('arial', 15)
 fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('arial', tamanho_fonte_aumentar_dominuir)
-fonte_texto_fixo = pygame.font.SysFont('arial', 15)
 fonte_sinal_mais = pygame.font.SysFont('arial', 19) #O sinal de + é muito grande
 
-linhas = [""]
 linhas = [
-    {"texto": "", "fonte": fonte_texto}
+    {"texto": ""}
 ]
 linha_atual = 0
 onde_digitar = pygame.Rect(3, 40, LARGURA - 3, ALTURA - 40)
@@ -97,23 +105,21 @@ while rodando:
             if event.key == pygame.K_RETURN:
                 #linhas.insert(linha_atual+1, "")
                 linhas.append({
-                    "texto": "", "fonte": fonte_texto
+                    "texto": ""
                 })
                 linha_atual += 1
             elif event.key == pygame.K_BACKSPACE:
                 linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
             else:
+                segurou = True
                 linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
                 tamanho_fonte_texto -= 1
                 fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
-                linhas[linha_atual]["fonte"] = fonte_texto
-                print(tamanho_fonte_texto)
             if botao_texto_fonte_mais.collidepoint(posicao_mouse):
                 tamanho_fonte_texto += 1
                 fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
-                linhas[linha_atual]["fonte"] = fonte_texto
 
     fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
@@ -129,12 +135,12 @@ while rodando:
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
     for linha in linhas:
-        texto_surface = linha["fonte"].render(linha["texto"], True, "black")
+        texto_surface = fonte_texto.render(linha["texto"], True, "black")
         tela.blit(texto_surface, (onde_digitar.x, y_distancia))
-        y_distancia += fonte_texto_fixo.get_height()
+        y_distancia += fonte_texto.get_height()
 
-    cursor_y = y_distancia - fonte_texto_fixo.get_height()
-    largura_texto, altura_texto = fonte_texto_fixo.size(linhas[linha_atual]["texto"])
+    cursor_y = y_distancia - fonte_texto.get_height()
+    largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
     cursor_x = onde_digitar.x + largura_texto
 
     tempo_atual = pygame.time.get_ticks() #Pega o tick atual
@@ -148,7 +154,7 @@ while rodando:
             cor_piscada = "white"
             piscou = False
             tempo_desligado = tempo_atual
-    linha_texto = pygame.draw.line(tela, cor_piscada, (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto_fixo.get_height()), 2)
+    linha_texto = pygame.draw.line(tela, cor_piscada, (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
     
 
     pygame.display.flip()   # atualiza a tela
