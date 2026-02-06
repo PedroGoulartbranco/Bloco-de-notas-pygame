@@ -38,6 +38,7 @@ tempo_piscada = 500
 piscou = False
 tempo_desligado = 0
 cor_piscada = "white"
+segurou = False
 
 def desenhar_texto():
     #Criando texto botoes
@@ -94,6 +95,8 @@ def desenhar_botoes():
 
     return botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho
 
+def escrever(letra):
+    linhas[linha_atual]["texto"] += letra
 
 # loop principal
 rodando = True
@@ -112,7 +115,10 @@ while rodando:
                 linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
             else:
                 segurou = True
-                linhas[linha_atual]["texto"] += event.unicode
+                letra = event.unicode
+                #linhas[linha_atual]["texto"] += event.unicode
+        if event.type == pygame.KEYUP:
+            pass
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
                 tamanho_fonte_texto -= 1
@@ -133,6 +139,9 @@ while rodando:
     pygame.draw.rect(tela, "white", onde_digitar) 
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
+
+    if segurou:
+        escrever(letra)
 
     for linha in linhas:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
