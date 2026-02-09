@@ -39,6 +39,9 @@ piscou = False
 tempo_desligado = 0
 cor_piscada = "white"
 segurou = False
+escreveu_primeira_letra = False
+
+tempo_que_letra_foi_solta = 0
 
 def desenhar_texto():
     #Criando texto botoes
@@ -114,11 +117,14 @@ while rodando:
             elif event.key == pygame.K_BACKSPACE:
                 linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
             else:
+                tempo_que_letra_clicada = pygame.time.get_ticks()
                 segurou = True
                 letra = event.unicode
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
-            pass
+            segurou = False
+            escreveu_primeira_letra = False
+            tempo_que_letra_foi_solta = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
                 tamanho_fonte_texto -= 1
@@ -140,8 +146,14 @@ while rodando:
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
+    tempo_atual = pygame.time.get_ticks() #Pega o tick atual
+
     if segurou:
-        escrever(letra)
+        if not escreveu_primeira_letra:
+            linhas[linha_atual]["texto"] += letra
+            escreveu_primeira_letra = True
+        if (tempo_atual - tempo_que_letra_clicada >= 500):
+            escrever(letra)
 
     for linha in linhas:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
@@ -152,7 +164,6 @@ while rodando:
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
     cursor_x = onde_digitar.x + largura_texto
 
-    tempo_atual = pygame.time.get_ticks() #Pega o tick atual
     if piscou == False:
         if tempo_atual - tempo_desligado >= tempo_piscada:
             cor_piscada = "black"
