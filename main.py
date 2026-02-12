@@ -42,6 +42,7 @@ segurou = False
 escreveu_primeira_letra = False
 segurou_excluir = False
 excluiu_primeira_vez = False
+primeira_vez_apagado_segurando = False
 
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
@@ -130,6 +131,7 @@ while rodando:
             escreveu_primeira_letra = False
             segurou_excluir = False
             excluiu_primeira_vez =False
+            primeira_vez_apagado_segurando = False
             tempo_que_letra_foi_solta = pygame.time.get_ticks()
             tempo_backspace_solto = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -162,12 +164,18 @@ while rodando:
         if (tempo_atual - tempo_que_letra_clicada >= 500):
             escrever(letra)
     if segurou_excluir:
-        print(segurou_excluir)
         if not excluiu_primeira_vez:
             linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
             excluiu_primeira_vez = True
         if (tempo_atual - tempo_backspace_solto >= 500):
-            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
+            if not primeira_vez_apagado_segurando:
+                tempo_ultima_letra_excluida = pygame.time.get_ticks()
+                linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
+                primeira_vez_apagado_segurando = True
+            else:
+                if (tempo_atual - tempo_ultima_letra_excluida >= 50):
+                    tempo_ultima_letra_excluida = pygame.time.get_ticks()
+                    linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
 
     for linha in linhas:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
