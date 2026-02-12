@@ -40,8 +40,11 @@ tempo_desligado = 0
 cor_piscada = "white"
 segurou = False
 escreveu_primeira_letra = False
+segurou_excluir = False
+excluiu_primeira_vez = False
 
 tempo_que_letra_foi_solta = 0
+tempo_backspace_solto = 0
 
 def desenhar_texto():
     #Criando texto botoes
@@ -114,8 +117,9 @@ while rodando:
                     "texto": ""
                 })
                 linha_atual += 1
-            elif event.key == pygame.K_BACKSPACE:
-                linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
+            elif event.key == pygame.K_BACKSPACE: #Apagar
+                #linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
+                segurou_excluir = True
             else:
                 tempo_que_letra_clicada = pygame.time.get_ticks()
                 segurou = True
@@ -124,7 +128,10 @@ while rodando:
         if event.type == pygame.KEYUP:
             segurou = False
             escreveu_primeira_letra = False
+            segurou_excluir = False
+            excluiu_primeira_vez =False
             tempo_que_letra_foi_solta = pygame.time.get_ticks()
+            tempo_backspace_solto = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
                 tamanho_fonte_texto -= 1
@@ -154,6 +161,13 @@ while rodando:
             escreveu_primeira_letra = True
         if (tempo_atual - tempo_que_letra_clicada >= 500):
             escrever(letra)
+    if segurou_excluir:
+        print(segurou_excluir)
+        if not excluiu_primeira_vez:
+            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
+            excluiu_primeira_vez = True
+        if (tempo_atual - tempo_backspace_solto >= 500):
+            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
 
     for linha in linhas:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
