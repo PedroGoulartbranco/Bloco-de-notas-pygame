@@ -122,9 +122,10 @@ while rodando:
                 #linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
                 segurou_excluir = True
             else:
-                tempo_que_letra_clicada = pygame.time.get_ticks()
-                segurou = True
-                letra = event.unicode
+                if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT:
+                    tempo_que_letra_clicada = pygame.time.get_ticks()
+                    segurou = True
+                    letra = event.unicode
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
             segurou = False
@@ -172,6 +173,10 @@ while rodando:
                     linhas[linha_atual]["texto"] += letra
             #escrever(letra)
     if segurou_excluir:
+        if len(linhas[linha_atual]["texto"]) == 0:
+            if(linha_atual != 0):
+                linha_atual -= 1
+                print(linha_atual)
         if not excluiu_primeira_vez:
             linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
             excluiu_primeira_vez = True
