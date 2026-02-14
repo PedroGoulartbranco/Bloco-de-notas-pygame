@@ -175,6 +175,7 @@ while rodando:
     if segurou_excluir:
         if len(linhas[linha_atual]["texto"]) == 0:
             if(linha_atual != 0):
+                linhas.pop(linha_atual) #Exclui a linha
                 linha_atual -= 1
                 print(linha_atual)
         if not excluiu_primeira_vez:
@@ -210,6 +211,7 @@ while rodando:
             piscou = False
             tempo_desligado = tempo_atual
     linha_texto = pygame.draw.line(tela, cor_piscada, (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
+
     
 
     pygame.display.flip()   # atualiza a tela
