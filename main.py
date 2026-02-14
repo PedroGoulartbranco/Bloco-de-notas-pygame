@@ -178,9 +178,9 @@ while rodando:
                 linha_atual -= 1
                 print(linha_atual)
         if not excluiu_primeira_vez:
-            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
             excluiu_primeira_vez = True
-        if (tempo_atual - tempo_backspace_solto >= 500):
+            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
+        if (tempo_atual - tempo_backspace_solto >= 700):
             if not primeira_vez_segurando_tecla :
                 tempo_ultima_letra_modificada  = pygame.time.get_ticks()
                 linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
