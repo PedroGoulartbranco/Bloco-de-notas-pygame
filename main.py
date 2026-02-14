@@ -43,6 +43,10 @@ escreveu_primeira_letra = False
 segurou_excluir = False
 excluiu_primeira_vez = False
 primeira_vez_segurando_tecla = False
+mudar_linha_apagar = False
+tempo_ultima_letra_modificada = 0
+tempo_botao_excluir_clicado = 0
+linha_vazia = False
 
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
@@ -126,6 +130,8 @@ while rodando:
                     tempo_que_letra_clicada = pygame.time.get_ticks()
                     segurou = True
                     letra = event.unicode
+                if event.key == pygame.K_BACKSPACE:
+                    tempo_botao_excluir_clicado = pygame.time.get_ticks()
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
             segurou = False
@@ -174,22 +180,32 @@ while rodando:
             #escrever(letra)
     if segurou_excluir:
         if len(linhas[linha_atual]["texto"]) == 0:
-            if(linha_atual != 0):
+            if(linha_atual != 0) and not linha_vazia:
+                mudar_linha_apagar = False
+                tempo_botao_excluir_clicado = pygame.time.get_ticks()
+                segurou_excluir = False
+                linha_vazia = True
+            elif linha_vazia:
+                print("linha final ", len(linhas[linha_atual]["texto"]))
                 linhas.pop(linha_atual) #Exclui a linha
                 linha_atual -= 1
-                print(linha_atual)
-        if not excluiu_primeira_vez:
-            excluiu_primeira_vez = True
-            linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
-        if (tempo_atual - tempo_backspace_solto >= 700):
-            if not primeira_vez_segurando_tecla :
-                tempo_ultima_letra_modificada  = pygame.time.get_ticks()
+                linha_vazia = False
+            #if not mudar_linha_apagar:
+                #mudar_linha_apagar = True
+                #segurou_excluir = False
+        else:
+            if not excluiu_primeira_vez:
+                excluiu_primeira_vez = True
                 linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
-                primeira_vez_segurando_tecla = True
-            else:
-                if (tempo_atual - tempo_ultima_letra_modificada  >= 50):
+            if (tempo_atual - tempo_backspace_solto >= 700):
+                if not primeira_vez_segurando_tecla :
                     tempo_ultima_letra_modificada  = pygame.time.get_ticks()
                     linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
+                    primeira_vez_segurando_tecla = True
+                else:
+                    if (tempo_atual - tempo_ultima_letra_modificada  >= 50):
+                        tempo_ultima_letra_modificada  = pygame.time.get_ticks()
+                        linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1]
 
     for linha in linhas:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
