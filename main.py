@@ -23,10 +23,10 @@ pygame.display.set_caption("PedroNote")
 tamanho_fonte_texto = 15
 tamanho_fonte_aumentar_dominuir = 28
 
-fonte_menu = pygame.font.SysFont('arial', 15)
-fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto)
-fonte_botao_menos_mais = pygame.font.SysFont('arial', tamanho_fonte_aumentar_dominuir)
-fonte_sinal_mais = pygame.font.SysFont('arial', 19) #O sinal de + é muito grande
+fonte_menu = pygame.font.SysFont('consolas', 15)
+fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto)
+fonte_botao_menos_mais = pygame.font.SysFont('consolas', tamanho_fonte_aumentar_dominuir)
+fonte_sinal_mais = pygame.font.SysFont('consolas', 19) #O sinal de + é muito grande
 
 linhas = [
     {"texto": ""}
@@ -47,6 +47,8 @@ mudar_linha_apagar = False
 tempo_ultima_letra_modificada = 0
 tempo_botao_excluir_clicado = 0
 linha_vazia = False
+cursor_automatico = True
+numero_seta = 0
 
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
@@ -109,6 +111,18 @@ def desenhar_botoes():
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
 
+def mexer_cursor(numero_seta, fonte, linha_atual, onde_digitar, y_distancia):
+    cima = 1073741906
+    baixo = 1073741905
+    direita = 1073741903
+    esquerda = 1073741904
+
+    
+    
+    if numero_seta == direita or numero_seta == esquerda:
+        cursor_y = y_distancia - fonte.get_height()
+        #cursor_x = (onde_digitar + largura_texto) - 
+
 # loop principal
 rodando = True
 while rodando:
@@ -132,6 +146,10 @@ while rodando:
                     letra = event.unicode
                 if event.key == pygame.K_BACKSPACE:
                     tempo_botao_excluir_clicado = pygame.time.get_ticks()
+                if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                    cursor_automatico = False
+                    numero_seta = event.key
+                    print(event.key)
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
             segurou = False
@@ -144,12 +162,12 @@ while rodando:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
                 tamanho_fonte_texto -= 1
-                fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
+                fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_texto_fonte_mais.collidepoint(posicao_mouse):
                 tamanho_fonte_texto += 1
-                fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
+                fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
 
-    fonte_texto = pygame.font.SysFont('arial', tamanho_fonte_texto) #Atualiza a fonte
+    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
 
     tela.fill("white")  
@@ -212,9 +230,12 @@ while rodando:
         tela.blit(texto_surface, (onde_digitar.x, y_distancia))
         y_distancia += fonte_texto.get_height()
 
-    cursor_y = y_distancia - fonte_texto.get_height()
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
-    cursor_x = onde_digitar.x + largura_texto
+    if cursor_automatico:
+        cursor_y = y_distancia - fonte_texto.get_height()
+        cursor_x = onde_digitar.x + largura_texto
+    else:
+        pass
 
     if piscou == False:
         if tempo_atual - tempo_desligado >= tempo_piscada:
