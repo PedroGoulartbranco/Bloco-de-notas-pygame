@@ -53,6 +53,8 @@ numero_seta = 0
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
+botoes_do_menu_aparecer = False
+
 def desenhar_texto():
     #Criando texto botoes
     texto_arquivo_opcoes =  fonte_menu.render("Menu", True, "black")
@@ -117,11 +119,16 @@ def mexer_cursor(numero_seta, fonte, linha_atual, onde_digitar, y_distancia):
     direita = 1073741903
     esquerda = 1073741904
 
+    print(onde_digitar, largura_texto)
     
-    
-    if numero_seta == direita or numero_seta == esquerda:
+    if numero_seta == esquerda:
         cursor_y = y_distancia - fonte.get_height()
-        #cursor_x = (onde_digitar + largura_texto) - 
+        cursor_x = (onde_digitar.x + largura_texto) - fonte.size("A")[0]
+    if numero_seta == direita:
+        cursor_y = y_distancia - fonte.get_height()
+        cursor_x = (onde_digitar.x + largura_texto) + fonte.size("A")[0]
+
+    return cursor_x, cursor_y, onde_digitar
 
 # loop principal
 rodando = True
@@ -231,11 +238,12 @@ while rodando:
         y_distancia += fonte_texto.get_height()
 
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
+
     if cursor_automatico:
         cursor_y = y_distancia - fonte_texto.get_height()
         cursor_x = onde_digitar.x + largura_texto
     else:
-        pass
+        cursor_x, cursor_y, onde_digitar = mexer_cursor(numero_seta, fonte_texto, linhas[linha_atual]["texto"], onde_digitar, y_distancia)
 
     if piscou == False:
         if tempo_atual - tempo_desligado >= tempo_piscada:
