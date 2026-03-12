@@ -120,15 +120,27 @@ def desenhar_menu_opcoes():
         sombra_menu_opcoes.fill((0,0,0,15))
         tela.blit(sombra_menu_opcoes, (3, 38))
 
-    botao_abrir_arquivo = pygame.Rect(0, 30, 200, 30)
+    botao_novo_arquivo = pygame.Rect(0, 30, 200, 30)
+    botao_abrir_arquivo = pygame.Rect(0, 50, 200, 30)
+    botao_salvar_arquivo = pygame.Rect(0, 70, 200, 30)
     
     pygame.draw.rect(tela, "#DDD4D4", menu_opcoes)
     
     #--------- Desenhar Botões --------
+    pygame.draw.rect(tela, "#DDD4D4", botao_novo_arquivo)
+    texto_botao_novo_arquivo =  fonte_menu.render("Novo        Ctrl + n", True, "black")
+    coordenada_texto_botao_novo_arquivo = texto_botao_novo_arquivo.get_rect(center=botao_novo_arquivo.center)
+    tela.blit(texto_botao_novo_arquivo, coordenada_texto_botao_novo_arquivo)
+
     pygame.draw.rect(tela, "#DDD4D4", botao_abrir_arquivo)
-    texto_botao_abrir_arquivo =  fonte_menu.render("Abrir        Ctrl + n", True, "black")
-    coordenada_texto_botao_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(center=botao_abrir_arquivo.center)
-    tela.blit(texto_botao_abrir_arquivo, coordenada_texto_botao_abrir_arquivo)
+    texto_botao_abrir_arquivo =  fonte_menu.render("Abrir...    Ctrl + O", True, "black")
+    coordenada_texto_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(center=botao_abrir_arquivo.center)
+    tela.blit(texto_botao_abrir_arquivo, coordenada_texto_abrir_arquivo)
+
+    pygame.draw.rect(tela, "#DDD4D4", botao_salvar_arquivo)
+    texto_botao_salvar_arquivo =  fonte_menu.render("Salvar...   Ctrl + S", True, "black")
+    coordenada_texto_salvar_arquivo = texto_botao_salvar_arquivo.get_rect(center=botao_salvar_arquivo.center)
+    tela.blit(texto_botao_salvar_arquivo, coordenada_texto_salvar_arquivo)
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
