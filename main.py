@@ -110,6 +110,10 @@ def desenhar_botoes():
 
     return botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho
 
+def desenhar_menu_opcoes():
+    menu_opcoes = pygame.Rect(0, 10, 200, 200)
+    pygame.draw.rect(tela, "red", menu_opcoes)
+
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
 
@@ -173,6 +177,10 @@ while rodando:
             if botao_texto_fonte_mais.collidepoint(posicao_mouse):
                 tamanho_fonte_texto += 1
                 fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+            if botao_arquivo.collidepoint(posicao_mouse):
+                botoes_do_menu_aparecer = not botoes_do_menu_aparecer
+                print("oi")
+                desenhar_menu_opcoes()
 
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
@@ -257,6 +265,9 @@ while rodando:
             tempo_desligado = tempo_atual
     linha_texto = pygame.draw.line(tela, cor_piscada, (cursor_x, cursor_y), (cursor_x, cursor_y + fonte_texto.get_height()), 2)
 
+    
+    if botoes_do_menu_aparecer:
+        desenhar_menu_opcoes()
     
 
     pygame.display.flip()   # atualiza a tela
