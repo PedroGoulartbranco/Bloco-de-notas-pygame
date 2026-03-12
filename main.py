@@ -20,7 +20,7 @@ pygame.display.set_caption("PedroNote")
 #pygame.key.set_repeat(300, 40)
 
 
-tamanho_fonte_texto = 15
+tamanho_fonte_texto = 22
 tamanho_fonte_aumentar_dominuir = 28
 
 fonte_menu = pygame.font.SysFont('consolas', 15)
@@ -173,11 +173,13 @@ while rodando:
             tempo_backspace_solto = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if botao_texto_menos.collidepoint(posicao_mouse):
-                tamanho_fonte_texto -= 1
-                fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+                if tamanho_fonte_texto > 12:
+                    tamanho_fonte_texto -= 1
+                    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_texto_fonte_mais.collidepoint(posicao_mouse):
-                tamanho_fonte_texto += 1
-                fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+                if tamanho_fonte_texto < 120:
+                    tamanho_fonte_texto += 1
+                    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_arquivo.collidepoint(posicao_mouse):
                 botoes_do_menu_aparecer = not botoes_do_menu_aparecer
                 desenhar_menu_opcoes()
