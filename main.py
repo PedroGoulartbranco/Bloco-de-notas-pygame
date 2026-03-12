@@ -54,6 +54,8 @@ tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
 botoes_do_menu_aparecer = False
+menu_opcoes = pygame.Rect(0, 30, 200, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
+mouse_encima_do_menu_de_opcoes = False
 
 def desenhar_texto():
     #Criando texto botoes
@@ -111,8 +113,7 @@ def desenhar_botoes():
     return botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho
 
 def desenhar_menu_opcoes():
-    menu_opcoes = pygame.Rect(0, 10, 200, 200)
-    pygame.draw.rect(tela, "red", menu_opcoes)
+    pygame.draw.rect(tela, "#C0B8B8", menu_opcoes)
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
@@ -179,8 +180,11 @@ while rodando:
                 fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_arquivo.collidepoint(posicao_mouse):
                 botoes_do_menu_aparecer = not botoes_do_menu_aparecer
-                print("oi")
                 desenhar_menu_opcoes()
+            if mouse_encima_do_menu_de_opcoes:
+                botoes_do_menu_aparecer = False
+                mouse_encima_do_menu_de_opcoes = False
+            
 
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
@@ -268,6 +272,8 @@ while rodando:
     
     if botoes_do_menu_aparecer:
         desenhar_menu_opcoes()
+        if menu_opcoes.collidepoint(posicao_mouse):
+            mouse_encima_do_menu_de_opcoes = True
     
 
     pygame.display.flip()   # atualiza a tela
