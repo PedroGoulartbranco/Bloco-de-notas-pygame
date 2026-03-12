@@ -115,29 +115,40 @@ def desenhar_botoes():
 
 def desenhar_menu_opcoes():
     #Tamanho e posicao sombra = (5, 40, 200, 145)
+    posicao_mouse = pygame.mouse.get_pos()
+
     for i in range(5):
         sombra_menu_opcoes = pygame.Surface((200 + 2 * i, 145 + 2 * i), pygame.SRCALPHA)
         sombra_menu_opcoes.fill((0,0,0,15))
         tela.blit(sombra_menu_opcoes, (3, 38))
 
-    botao_novo_arquivo = pygame.Rect(0, 30, 200, 30)
-    botao_abrir_arquivo = pygame.Rect(0, 50, 200, 30)
-    botao_salvar_arquivo = pygame.Rect(0, 70, 200, 30)
+    cor_botao_novo = cor_botao_abrir = cor_botao_salvar = "#DDD4D4"
+
+    botao_novo_arquivo = pygame.Rect(0, 30, 200, 20)
+    botao_abrir_arquivo = pygame.Rect(0, 60, 200, 20)
+    botao_salvar_arquivo = pygame.Rect(0, 90, 200, 20)
     
     pygame.draw.rect(tela, "#DDD4D4", menu_opcoes)
-    
+
+    if botao_novo_arquivo.collidepoint(posicao_mouse):
+        cor_botao_novo = (229, 241, 251)
+    if botao_abrir_arquivo.collidepoint(posicao_mouse):
+        cor_botao_abrir = (229, 241, 251)
+    if botao_salvar_arquivo.collidepoint(posicao_mouse):
+        cor_botao_salvar = (229, 241, 251)
+
     #--------- Desenhar Botões --------
-    pygame.draw.rect(tela, "#DDD4D4", botao_novo_arquivo)
+    pygame.draw.rect(tela, cor_botao_novo, botao_novo_arquivo)
     texto_botao_novo_arquivo =  fonte_menu.render("Novo        Ctrl + n", True, "black")
     coordenada_texto_botao_novo_arquivo = texto_botao_novo_arquivo.get_rect(center=botao_novo_arquivo.center)
     tela.blit(texto_botao_novo_arquivo, coordenada_texto_botao_novo_arquivo)
 
-    pygame.draw.rect(tela, "#DDD4D4", botao_abrir_arquivo)
+    pygame.draw.rect(tela, cor_botao_abrir, botao_abrir_arquivo)
     texto_botao_abrir_arquivo =  fonte_menu.render("Abrir...    Ctrl + O", True, "black")
     coordenada_texto_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(center=botao_abrir_arquivo.center)
     tela.blit(texto_botao_abrir_arquivo, coordenada_texto_abrir_arquivo)
 
-    pygame.draw.rect(tela, "#DDD4D4", botao_salvar_arquivo)
+    pygame.draw.rect(tela, cor_botao_salvar, botao_salvar_arquivo)
     texto_botao_salvar_arquivo =  fonte_menu.render("Salvar...   Ctrl + S", True, "black")
     coordenada_texto_salvar_arquivo = texto_botao_salvar_arquivo.get_rect(center=botao_salvar_arquivo.center)
     tela.blit(texto_botao_salvar_arquivo, coordenada_texto_salvar_arquivo)
@@ -209,7 +220,6 @@ while rodando:
                     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_arquivo.collidepoint(posicao_mouse):
                 botoes_do_menu_aparecer = not botoes_do_menu_aparecer
-                print(botoes_do_menu_aparecer)
                 abriu_menu_primeira_vez = True
             if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
                 botoes_do_menu_aparecer = False
@@ -302,6 +312,7 @@ while rodando:
     
     if botoes_do_menu_aparecer:
         desenhar_menu_opcoes()
+
         if menu_opcoes.collidepoint(posicao_mouse):
             mouse_encima_do_menu_de_opcoes = True
             abriu_menu_primeira_vez = False
