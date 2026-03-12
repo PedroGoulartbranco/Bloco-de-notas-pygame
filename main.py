@@ -119,7 +119,16 @@ def desenhar_menu_opcoes():
         sombra_menu_opcoes = pygame.Surface((200 + 2 * i, 145 + 2 * i), pygame.SRCALPHA)
         sombra_menu_opcoes.fill((0,0,0,15))
         tela.blit(sombra_menu_opcoes, (3, 38))
+
+    botao_abrir_arquivo = pygame.Rect(0, 30, 200, 30)
+    
     pygame.draw.rect(tela, "#DDD4D4", menu_opcoes)
+    
+    #--------- Desenhar Botões --------
+    pygame.draw.rect(tela, "#DDD4D4", botao_abrir_arquivo)
+    texto_botao_abrir_arquivo =  fonte_menu.render("Abrir        Ctrl + n", True, "black")
+    coordenada_texto_botao_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(center=botao_abrir_arquivo.center)
+    tela.blit(texto_botao_abrir_arquivo, coordenada_texto_botao_abrir_arquivo)
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
@@ -191,7 +200,6 @@ while rodando:
                 print(botoes_do_menu_aparecer)
                 abriu_menu_primeira_vez = True
             if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
-                print("ooooooooooooo")
                 botoes_do_menu_aparecer = False
                 mouse_encima_do_menu_de_opcoes = False
             
@@ -284,11 +292,9 @@ while rodando:
         desenhar_menu_opcoes()
         if menu_opcoes.collidepoint(posicao_mouse):
             mouse_encima_do_menu_de_opcoes = True
-            print("Dentro", mouse_encima_do_menu_de_opcoes)
             abriu_menu_primeira_vez = False
         else:
             mouse_encima_do_menu_de_opcoes = False
-            print("Fora", mouse_encima_do_menu_de_opcoes)
             abriu_menu_primeira_vez = False
     
 
