@@ -56,6 +56,7 @@ tempo_backspace_solto = 0
 botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 200, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
+abriu_menu_primeira_vez = False #Para nao fechar automaticamente quando fecha 
 
 def desenhar_texto():
     #Criando texto botoes
@@ -113,7 +114,12 @@ def desenhar_botoes():
     return botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho
 
 def desenhar_menu_opcoes():
-    pygame.draw.rect(tela, "#C0B8B8", menu_opcoes)
+    #Tamanho e posicao sombra = (5, 40, 200, 145)
+    for i in range(5):
+        sombra_menu_opcoes = pygame.Surface((200 + 2 * i, 145 + 2 * i), pygame.SRCALPHA)
+        sombra_menu_opcoes.fill((0,0,0,15))
+        tela.blit(sombra_menu_opcoes, (3, 38))
+    pygame.draw.rect(tela, "#DDD4D4", menu_opcoes)
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
@@ -182,8 +188,10 @@ while rodando:
                     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
             if botao_arquivo.collidepoint(posicao_mouse):
                 botoes_do_menu_aparecer = not botoes_do_menu_aparecer
-                desenhar_menu_opcoes()
-            if mouse_encima_do_menu_de_opcoes:
+                print(botoes_do_menu_aparecer)
+                abriu_menu_primeira_vez = True
+            if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
+                print("ooooooooooooo")
                 botoes_do_menu_aparecer = False
                 mouse_encima_do_menu_de_opcoes = False
             
@@ -276,6 +284,12 @@ while rodando:
         desenhar_menu_opcoes()
         if menu_opcoes.collidepoint(posicao_mouse):
             mouse_encima_do_menu_de_opcoes = True
+            print("Dentro", mouse_encima_do_menu_de_opcoes)
+            abriu_menu_primeira_vez = False
+        else:
+            mouse_encima_do_menu_de_opcoes = False
+            print("Fora", mouse_encima_do_menu_de_opcoes)
+            abriu_menu_primeira_vez = False
     
 
     pygame.display.flip()   # atualiza a tela
