@@ -57,6 +57,8 @@ botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 200, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
 abriu_menu_primeira_vez = False #Para nao fechar automaticamente quando fecha 
+botao_novo_arquivo = botao_abrir_arquivo = botao_salvar_arquivo = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
+
 
 def desenhar_texto():
     #Criando texto botoes
@@ -122,13 +124,13 @@ def desenhar_menu_opcoes():
         sombra_menu_opcoes.fill((0,0,0,15))
         tela.blit(sombra_menu_opcoes, (3, 38))
 
-    cor_botao_novo = cor_botao_abrir = cor_botao_salvar = "#DDD4D4"
+    cor_botao_novo = cor_botao_abrir = cor_botao_salvar = "#F8EDED"
 
-    botao_novo_arquivo = pygame.Rect(0, 30, 200, 20)
-    botao_abrir_arquivo = pygame.Rect(0, 60, 200, 20)
-    botao_salvar_arquivo = pygame.Rect(0, 90, 200, 20)
+    botao_novo_arquivo = pygame.Rect(0, 35, 200, 20)
+    botao_abrir_arquivo = pygame.Rect(0, 55, 200, 20)
+    botao_salvar_arquivo = pygame.Rect(0, 75, 200, 20)
     
-    pygame.draw.rect(tela, "#DDD4D4", menu_opcoes)
+    pygame.draw.rect(tela, "#F8EDED", menu_opcoes)
 
     if botao_novo_arquivo.collidepoint(posicao_mouse):
         cor_botao_novo = (229, 241, 251)
@@ -152,6 +154,8 @@ def desenhar_menu_opcoes():
     texto_botao_salvar_arquivo =  fonte_menu.render("Salvar...   Ctrl + S", True, "black")
     coordenada_texto_salvar_arquivo = texto_botao_salvar_arquivo.get_rect(center=botao_salvar_arquivo.center)
     tela.blit(texto_botao_salvar_arquivo, coordenada_texto_salvar_arquivo)
+
+    return botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
@@ -179,6 +183,16 @@ def pular_linha(linhas, linha_atual):
     })
     linha_atual += 1
     return linhas, linha_atual
+
+def verificar_se_ta_vazio():
+    vazio = False
+    for linha in linhas:
+        numero_caracteres = len(linha['texto'])
+        if numero_caracteres > 0:
+            vazio = False
+        else:
+            vazio = True
+    return vazio
 
 # loop principal
 rodando = True
@@ -228,6 +242,11 @@ while rodando:
             if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
                 botoes_do_menu_aparecer = False
                 mouse_encima_do_menu_de_opcoes = False
+            if botoes_do_menu_aparecer:
+                if botao_novo_arquivo.collidepoint(posicao_mouse):
+                    esta_vazio = verificar_se_ta_vazio()
+                    if esta_vazio:
+                        print("teste")
             
 
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
@@ -321,7 +340,7 @@ while rodando:
 
     
     if botoes_do_menu_aparecer:
-        desenhar_menu_opcoes()
+        botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo = desenhar_menu_opcoes()
 
         if menu_opcoes.collidepoint(posicao_mouse):
             mouse_encima_do_menu_de_opcoes = True
