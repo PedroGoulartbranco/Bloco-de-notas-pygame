@@ -173,6 +173,13 @@ def mexer_cursor(numero_seta, fonte, linha_atual, onde_digitar, y_distancia):
 
     return cursor_x, cursor_y, onde_digitar
 
+def pular_linha(linhas, linha_atual):
+    linhas.append({
+        "texto": ""
+    })
+    linha_atual += 1
+    return linhas, linha_atual
+
 # loop principal
 rodando = True
 while rodando:
@@ -182,10 +189,7 @@ while rodando:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 #linhas.insert(linha_atual+1, "")
-                linhas.append({
-                    "texto": ""
-                })
-                linha_atual += 1
+                linhas, linha_atual = pular_linha(linhas, linha_atual)
             elif event.key == pygame.K_BACKSPACE: #Apagar
                 #linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
                 segurou_excluir = True
@@ -243,15 +247,21 @@ while rodando:
 
     if segurou:
         if not escreveu_primeira_letra:
+            if cursor_x >= 970:
+                linhas, linha_atual = pular_linha(linhas, linha_atual)
             linhas[linha_atual]["texto"] += letra
             escreveu_primeira_letra = True
         if (tempo_atual - tempo_que_letra_clicada >= 500):
             if not primeira_vez_segurando_tecla :
+                if cursor_x >= 970:
+                    linhas, linha_atual = pular_linha(linhas, linha_atual)
                 tempo_ultima_letra_modificada = pygame.time.get_ticks()
                 linhas[linha_atual]["texto"] += letra
                 primeira_vez_segurando_tecla = True
             else:
                 if (tempo_atual - tempo_ultima_letra_modificada >= 50):
+                    if cursor_x >= 970:
+                        linhas, linha_atual = pular_linha(linhas, linha_atual)
                     tempo_ultima_letra_modificada = pygame.time.get_ticks()
                     linhas[linha_atual]["texto"] += letra
             #escrever(letra)
