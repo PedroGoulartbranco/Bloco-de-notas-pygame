@@ -28,6 +28,8 @@ fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('consolas', tamanho_fonte_aumentar_dominuir)
 fonte_sinal_mais = pygame.font.SysFont('consolas', 19) #O sinal de + é muito grande
 
+cor_fonte_botao = "black"
+
 linhas = [
     {"texto": ""}
 ]
@@ -49,6 +51,8 @@ tempo_botao_excluir_clicado = 0
 linha_vazia = False
 cursor_automatico = True
 numero_seta = 0
+
+mostrar_janela_sair_salvar = False
 
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
@@ -194,6 +198,17 @@ def verificar_se_ta_vazio():
             vazio = True
     return vazio
 
+def criar_janela_de_jaida():
+    posicao_mouse = pygame.mouse.get_pos()
+    cor_janela = "#CEC5C5"
+    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = "#F8EDED"
+    
+    texto_na_janela_sair = fonte_menu.render("Deseja Salvar As Alterações ?", True, cor_fonte_botao)
+
+    janela_sair = pygame.Rect(300, 150, 400, 100)
+    pygame.draw.rect(tela, cor_janela, janela_sair)
+    print("desenhou")
+
 # loop principal
 rodando = True
 while rodando:
@@ -246,7 +261,10 @@ while rodando:
                 if botao_novo_arquivo.collidepoint(posicao_mouse):
                     esta_vazio = verificar_se_ta_vazio()
                     if esta_vazio:
-                        print("teste")
+                        botoes_do_menu_aparecer = False
+                        mouse_encima_do_menu_de_opcoes = False
+                    else:
+                        mostrar_janela_sair_salvar = True
             
 
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
@@ -348,6 +366,8 @@ while rodando:
         else:
             mouse_encima_do_menu_de_opcoes = False
             abriu_menu_primeira_vez = False
+    if mostrar_janela_sair_salvar:
+        criar_janela_de_jaida()
     
 
     pygame.display.flip()   # atualiza a tela
