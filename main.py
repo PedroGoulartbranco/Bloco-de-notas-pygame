@@ -8,6 +8,7 @@ pygame.init()
 LARGURA, ALTURA = 1000, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("Bloco de Notas")
+clock = pygame.time.Clock()
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -379,6 +380,7 @@ while rodando:
     
 
     pygame.display.flip()   # atualiza a tela
+    clock.tick(30) #Roda o loop 30 vezes por segundo
 
 pygame.quit()
 sys.exit()
