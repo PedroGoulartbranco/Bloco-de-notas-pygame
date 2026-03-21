@@ -7,18 +7,13 @@ pygame.init()
 # cria a janela
 LARGURA, ALTURA = 1000, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
-pygame.display.set_caption("Bloco de Notas")
+pygame.display.set_caption("PedroNote")
 clock = pygame.time.Clock()
 
 #icones
 icone = pygame.image.load("img/icon.ico")
 icone = pygame.transform.scale(icone, (256, 256))
 pygame.display.set_icon(icone)
-
-pygame.display.set_caption("PedroNote")
-
-#Configura o segurar do teclado
-#pygame.key.set_repeat(300, 40)
 
 
 tamanho_fonte_texto = 22
@@ -201,21 +196,27 @@ def verificar_se_ta_vazio():
 
 def criar_janela_de_jaida():
     posicao_mouse = pygame.mouse.get_pos()
-    cor_janela = "#CEC5C5"
+    cor_janela = "white"
     cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = "#F8EDED"
-
+    fonte_titulo_sair = pygame.font.SysFont('consolas', 14)
 
     janela_sair = pygame.Rect(300, 150, 400, 100)
 
     texto_na_janela_sair = fonte_menu.render("Deseja Salvar As Alterações ?", True, cor_fonte_botao)
-    coordenada_texto_botao_janela_sair = (310, 180)
+    texto_titulo_janela_sair = fonte_titulo_sair.render("PedroNote", True, "black")
+    coordenada_texto_titulo_janela_sair = (310, 180)
+    coordenada_texto_botao_janela_sair = (310, 180) 
 
-    for i in range(5):
+    for i in range(7):
         sombra_janela_sair = pygame.Surface((400 + 2 * i, 100 + 2 * i), pygame.SRCALPHA)
-        sombra_janela_sair.fill((0,0,0,40))
-        tela.blit(sombra_janela_sair, (303 - i, 152 - i))
+        sombra_janela_sair.fill((0,0,0,30))
+        tela.blit(sombra_janela_sair, (300 - i, 150 - i))
 
     pygame.draw.rect(tela, cor_janela, janela_sair)
+
+    tela.blit(texto_titulo_janela_sair, coordenada_texto_botao_janela_sair)
+    linha = pygame.draw.line(tela, ("gray"), (300, 170), (700, 170), 2)
+
     tela.blit(texto_na_janela_sair, coordenada_texto_botao_janela_sair)
 
 # loop principal
