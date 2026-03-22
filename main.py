@@ -9,6 +9,9 @@ LARGURA, ALTURA = 1000, 600
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("PedroNote")
 clock = pygame.time.Clock()
+cor_principal_geral = "white"
+cor_botoes_geral = "white"
+cor_fonte_geral = "black"
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -194,20 +197,22 @@ def verificar_se_ta_vazio():
             vazio = True
     return vazio
 
-def decidir_cor_linha(cor_principal="white"):
-    if (cor_principal != "black"):
-        return "black"
+def decidir_cor_linha():
+    global cor_principal_geral
+    if (cor_principal_geral != "black"):
+        return "gray"
     return "white"
 
-def criar_janela_de_jaida(cor_principal="white", cor_botoes="#F8EDED"):
+def criar_janela_de_jaida():
+    global cor_principal_geral, cor_botoes_geral, cor_fonte_geral
     posicao_mouse = pygame.mouse.get_pos()
-    cor_janela = cor_principal
-    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes
+    cor_janela = cor_principal_geral
+    cor_linha = decidir_cor_linha()
 
     janela_sair = pygame.Rect(300, 150, 400, 100)
 
-    texto_na_janela_sair = fonte_menu.render("Deseja Salvar As Alterações ?", True, cor_fonte_botao)
-    texto_titulo_janela_sair = fonte_menu.render("PedroNote", True, "black")
+    texto_na_janela_sair = fonte_menu.render("Deseja Salvar As Alterações ?", True, cor_fonte_geral)
+    texto_titulo_janela_sair = fonte_menu.render("PedroNote", True, cor_fonte_geral)
     coordenada_texto_titulo_janela_sair = (310, 155)
     coordenada_texto_botao_janela_sair = (310, 180) 
 
@@ -219,11 +224,20 @@ def criar_janela_de_jaida(cor_principal="white", cor_botoes="#F8EDED"):
     pygame.draw.rect(tela, cor_janela, janela_sair)
 
     tela.blit(texto_titulo_janela_sair, coordenada_texto_titulo_janela_sair )
-    pygame.draw.line(tela, ("gray"), (300, 170), (700, 170), 2)
+    pygame.draw.line(tela, cor_linha, (300, 170), (700, 170), 1)
 
     tela.blit(texto_na_janela_sair, coordenada_texto_botao_janela_sair)
+    criar_botoes_sair_salvar_janela()
 
-# loop principal
+def criar_botoes_sair_salvar_janela():
+    global cor_botoes_geral, cor_principal_geral
+    posicao_mouse = pygame.mouse.get_pos()
+    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes_geral
+
+    botao_salvar = pygame.Rect(310, 200, 200, 100)
+
+    pygame.draw.rect(tela, "red", botao_salvar)
+
 rodando = True
 while rodando:
     for event in pygame.event.get():
