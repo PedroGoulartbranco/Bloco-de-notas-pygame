@@ -194,17 +194,21 @@ def verificar_se_ta_vazio():
             vazio = True
     return vazio
 
-def criar_janela_de_jaida():
+def decidir_cor_linha(cor_principal="white"):
+    if (cor_principal != "black"):
+        return "black"
+    return "white"
+
+def criar_janela_de_jaida(cor_principal="white", cor_botoes="#F8EDED"):
     posicao_mouse = pygame.mouse.get_pos()
-    cor_janela = "white"
-    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = "#F8EDED"
-    fonte_titulo_sair = pygame.font.SysFont('consolas', 14)
+    cor_janela = cor_principal
+    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes
 
     janela_sair = pygame.Rect(300, 150, 400, 100)
 
     texto_na_janela_sair = fonte_menu.render("Deseja Salvar As Alterações ?", True, cor_fonte_botao)
-    texto_titulo_janela_sair = fonte_titulo_sair.render("PedroNote", True, "black")
-    coordenada_texto_titulo_janela_sair = (310, 180)
+    texto_titulo_janela_sair = fonte_menu.render("PedroNote", True, "black")
+    coordenada_texto_titulo_janela_sair = (310, 155)
     coordenada_texto_botao_janela_sair = (310, 180) 
 
     for i in range(7):
@@ -214,8 +218,8 @@ def criar_janela_de_jaida():
 
     pygame.draw.rect(tela, cor_janela, janela_sair)
 
-    tela.blit(texto_titulo_janela_sair, coordenada_texto_botao_janela_sair)
-    linha = pygame.draw.line(tela, ("gray"), (300, 170), (700, 170), 2)
+    tela.blit(texto_titulo_janela_sair, coordenada_texto_titulo_janela_sair )
+    pygame.draw.line(tela, ("gray"), (300, 170), (700, 170), 2)
 
     tela.blit(texto_na_janela_sair, coordenada_texto_botao_janela_sair)
 
@@ -377,6 +381,7 @@ while rodando:
             mouse_encima_do_menu_de_opcoes = False
             abriu_menu_primeira_vez = False
     if mostrar_janela_sair_salvar:
+        botoes_do_menu_aparecer = False
         criar_janela_de_jaida()
     
 
