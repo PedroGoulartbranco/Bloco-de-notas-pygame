@@ -234,27 +234,42 @@ def criar_botoes_sair_salvar_janela():
     global cor_botoes_geral, cor_principal_geral, cor_botoes_complementares
     posicao_mouse = pygame.mouse.get_pos()
     cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes_complementares
+    cor_botao_X = cor_botoes_geral
 
     
     botao_salvar = pygame.Rect(380, 225, 90, 20)
     botao_nao_salvar = pygame.Rect(480, 225, 100, 20)
     botao_cancelar = pygame.Rect(590, 225, 100, 20)
+    botao_X_sair = pygame.Rect(680, 150, 20, 20) #Botao X
 
     texto_botao_salvar = fonte_menu.render("Salvar", True, cor_fonte_geral)
     texto_botao_nao_salvar = fonte_menu.render("Não Salvar", True, cor_fonte_geral)
     texto_botao_cancelar = fonte_menu.render("Cancelar", True, cor_fonte_geral)
+    texto_botao_X = fonte_menu.render("X", True, cor_fonte_geral)
 
     coordenada_texto_botao_salvar = texto_botao_salvar.get_rect(center=botao_salvar.center)
     coordenada_texto_botao_nao_salvar = texto_botao_nao_salvar.get_rect(center=botao_nao_salvar.center)
     coordenada_texto_botao_cancelar = texto_botao_cancelar.get_rect(center=botao_cancelar.center)
+    coordenada_texto_botao_X = texto_botao_X.get_rect(center=botao_X_sair.center)
 
-    pygame.draw.rect(tela, cor_botoes_complementares, botao_salvar)
-    pygame.draw.rect(tela, cor_botoes_complementares, botao_nao_salvar)
-    pygame.draw.rect(tela, cor_botoes_complementares, botao_cancelar)
+    if botao_salvar.collidepoint(posicao_mouse):
+        cor_botao_salvar = (229, 241, 251)
+    if botao_nao_salvar.collidepoint(posicao_mouse):
+        cor_botao_nao_salvar = (229, 241, 251)
+    if botao_cancelar.collidepoint(posicao_mouse):
+        cor_botao_cancelar = (229, 241, 251)
+    if botao_X_sair.collidepoint(posicao_mouse):
+        cor_botao_X = "#F00A0A"
+
+    pygame.draw.rect(tela, cor_botao_salvar, botao_salvar)
+    pygame.draw.rect(tela, cor_botao_nao_salvar, botao_nao_salvar)
+    pygame.draw.rect(tela, cor_botao_cancelar, botao_cancelar)
+    pygame.draw.rect(tela, cor_botao_X, botao_X_sair)
 
     tela.blit(texto_botao_salvar, coordenada_texto_botao_salvar)
     tela.blit(texto_botao_nao_salvar, coordenada_texto_botao_nao_salvar)
     tela.blit(texto_botao_cancelar, coordenada_texto_botao_cancelar)
+    tela.blit(texto_botao_X, coordenada_texto_botao_X)
 
 rodando = True
 while rodando:
