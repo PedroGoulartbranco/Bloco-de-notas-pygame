@@ -12,6 +12,7 @@ clock = pygame.time.Clock()
 cor_principal_geral = "white"
 cor_botoes_geral = "white"
 cor_fonte_geral = "black"
+cor_botoes_complementares = "#E0E0E0"
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -225,18 +226,24 @@ def criar_janela_de_jaida():
 
     tela.blit(texto_titulo_janela_sair, coordenada_texto_titulo_janela_sair )
     pygame.draw.line(tela, cor_linha, (300, 170), (700, 170), 1)
+    pygame.draw.line(tela, cor_linha, (300, 220), (700, 220), 1)
 
     tela.blit(texto_na_janela_sair, coordenada_texto_botao_janela_sair)
     criar_botoes_sair_salvar_janela()
 
 def criar_botoes_sair_salvar_janela():
-    global cor_botoes_geral, cor_principal_geral
+    global cor_botoes_geral, cor_principal_geral, cor_botoes_complementares
     posicao_mouse = pygame.mouse.get_pos()
-    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes_geral
+    cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes_complementares
 
-    botao_salvar = pygame.Rect(310, 200, 200, 100)
+    
+    botao_salvar = pygame.Rect(380, 225, 90, 20)
+    botao_nao_salvar = pygame.Rect(480, 225, 100, 20)
+    botao_cancelar = pygame.Rect(590, 225, 100, 20)
 
-    pygame.draw.rect(tela, "red", botao_salvar)
+    pygame.draw.rect(tela, cor_botoes_complementares, botao_salvar)
+    pygame.draw.rect(tela, cor_botoes_complementares, botao_nao_salvar)
+    pygame.draw.rect(tela, cor_botoes_complementares, botao_cancelar)
 
 rodando = True
 while rodando:
