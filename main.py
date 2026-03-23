@@ -63,7 +63,7 @@ menu_opcoes = pygame.Rect(0, 30, 200, 150) #Criei essa variavel para ser global 
 mouse_encima_do_menu_de_opcoes = False
 abriu_menu_primeira_vez = False #Para nao fechar automaticamente quando fecha 
 botao_novo_arquivo = botao_abrir_arquivo = botao_salvar_arquivo = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
-
+botao_salvar = botao_nao_salvar = botao_cancelar = botao_X_sair = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
 
 def desenhar_texto():
     #Criando texto botoes
@@ -228,7 +228,8 @@ def criar_janela_de_saida():
     pygame.draw.line(tela, cor_linha, (300, 220), (700, 220), 1)
 
     tela.blit(texto_na_janela_sair, coordenada_texto_botao_janela_sair)
-    criar_botoes_sair_salvar_janela()
+    botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair = criar_botoes_sair_salvar_janela()
+    return botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def criar_botoes_sair_salvar_janela():
     global cor_botoes_geral, cor_principal_geral, cor_botoes_complementares
@@ -271,6 +272,8 @@ def criar_botoes_sair_salvar_janela():
     tela.blit(texto_botao_cancelar, coordenada_texto_botao_cancelar)
     tela.blit(texto_botao_X, coordenada_texto_botao_X)
 
+    return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
+
 rodando = True
 while rodando:
     for event in pygame.event.get():
@@ -305,6 +308,13 @@ while rodando:
             tempo_que_letra_foi_solta = pygame.time.get_ticks()
             tempo_backspace_solto = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
+            if mostrar_janela_sair_salvar:
+                if botao_salvar.collidepoint(posicao_mouse):
+                    pass
+                if botao_nao_salvar.collidepoint(posicao_mouse):
+                    rodando = False
+                if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
+                    mostrar_janela_sair_salvar = False
             if botao_texto_menos.collidepoint(posicao_mouse):
                 if tamanho_fonte_texto > 12:
                     tamanho_fonte_texto -= 1
@@ -327,6 +337,7 @@ while rodando:
                         mouse_encima_do_menu_de_opcoes = False
                     else:
                         mostrar_janela_sair_salvar = True
+                
             
 
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
@@ -428,7 +439,7 @@ while rodando:
             abriu_menu_primeira_vez = False
     if mostrar_janela_sair_salvar:
         botoes_do_menu_aparecer = False
-        criar_janela_de_saida()
+        botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair = criar_janela_de_saida()
     
 
     pygame.display.flip()   # atualiza a tela
