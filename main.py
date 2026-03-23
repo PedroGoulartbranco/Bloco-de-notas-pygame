@@ -13,6 +13,7 @@ cor_principal_geral = "white"
 cor_botoes_geral = "white"
 cor_fonte_geral = "black"
 cor_botoes_complementares = "#E0E0E0"
+mudancas = False
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -169,8 +170,6 @@ def mexer_cursor(numero_seta, fonte, linha_atual, onde_digitar, y_distancia):
     baixo = 1073741905
     direita = 1073741903
     esquerda = 1073741904
-
-    print(onde_digitar, largura_texto)
     
     if numero_seta == esquerda:
         cursor_y = y_distancia - fonte.get_height()
@@ -204,7 +203,7 @@ def decidir_cor_linha():
         return "gray"
     return "white"
 
-def criar_janela_de_jaida():
+def criar_janela_de_saida():
     global cor_principal_geral, cor_botoes_geral, cor_fonte_geral
     posicao_mouse = pygame.mouse.get_pos()
     cor_janela = cor_principal_geral
@@ -241,15 +240,29 @@ def criar_botoes_sair_salvar_janela():
     botao_nao_salvar = pygame.Rect(480, 225, 100, 20)
     botao_cancelar = pygame.Rect(590, 225, 100, 20)
 
+    texto_botao_salvar = fonte_menu.render("Salvar", True, cor_fonte_geral)
+    texto_botao_nao_salvar = fonte_menu.render("Não Salvar", True, cor_fonte_geral)
+    texto_botao_cancelar = fonte_menu.render("Cancelar", True, cor_fonte_geral)
+
+    coordenada_texto_botao_salvar = texto_botao_salvar.get_rect(center=botao_salvar.center)
+    coordenada_texto_botao_nao_salvar = texto_botao_nao_salvar.get_rect(center=botao_nao_salvar.center)
+    coordenada_texto_botao_cancelar = texto_botao_cancelar.get_rect(center=botao_cancelar.center)
+
     pygame.draw.rect(tela, cor_botoes_complementares, botao_salvar)
     pygame.draw.rect(tela, cor_botoes_complementares, botao_nao_salvar)
     pygame.draw.rect(tela, cor_botoes_complementares, botao_cancelar)
+
+    tela.blit(texto_botao_salvar, coordenada_texto_botao_salvar)
+    tela.blit(texto_botao_nao_salvar, coordenada_texto_botao_nao_salvar)
+    tela.blit(texto_botao_cancelar, coordenada_texto_botao_cancelar)
 
 rodando = True
 while rodando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            rodando = False
+            if not mudancas:
+                rodando = False
+            mostrar_janela_sair_salvar = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 #linhas.insert(linha_atual+1, "")
@@ -267,7 +280,6 @@ while rodando:
                 if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                     cursor_automatico = False
                     numero_seta = event.key
-                    print(event.key)
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
             segurou = False
@@ -336,7 +348,6 @@ while rodando:
                         linhas, linha_atual = pular_linha(linhas, linha_atual)
                     tempo_ultima_letra_modificada = pygame.time.get_ticks()
                     linhas[linha_atual]["texto"] += letra
-            #escrever(letra)
     if segurou_excluir:
         if len(linhas[linha_atual]["texto"]) == 0:
             if(linha_atual != 0) and not linha_vazia:
@@ -345,7 +356,6 @@ while rodando:
                 segurou_excluir = False
                 linha_vazia = True
             elif linha_vazia:
-                print("linha final ", len(linhas[linha_atual]["texto"]))
                 linhas.pop(linha_atual) #Exclui a linha
                 linha_atual -= 1
                 linha_vazia = False
@@ -403,7 +413,7 @@ while rodando:
             abriu_menu_primeira_vez = False
     if mostrar_janela_sair_salvar:
         botoes_do_menu_aparecer = False
-        criar_janela_de_jaida()
+        criar_janela_de_saida()
     
 
     pygame.display.flip()   # atualiza a tela
