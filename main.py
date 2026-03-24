@@ -1,6 +1,6 @@
 import pygame
 import sys
-
+from tkinter import filedialog
 # inicia o pygame
 pygame.init()
 
@@ -274,13 +274,21 @@ def criar_botoes_sair_salvar_janela():
 
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
+def salvar():
+    caminho = filedialog.asksaveasfilename(
+        defaultextension=".txt",
+        filetypes=[("Arquivos de texto", "*.txt")],
+        title="Escolha onde salvar seu arquivo"
+    )
+
 rodando = True
 while rodando:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             if not mudancas:
                 rodando = False
-            mostrar_janela_sair_salvar = True
+            else:
+                mostrar_janela_sair_salvar = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 #linhas.insert(linha_atual+1, "")
@@ -310,7 +318,7 @@ while rodando:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mostrar_janela_sair_salvar:
                 if botao_salvar.collidepoint(posicao_mouse):
-                    pass
+                    salvar()
                 if botao_nao_salvar.collidepoint(posicao_mouse):
                     rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
