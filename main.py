@@ -1,6 +1,7 @@
 import pygame
 import sys
 from tkinter import filedialog
+import os 
 # inicia o pygame
 pygame.init()
 
@@ -280,6 +281,11 @@ def salvar():
         filetypes=[("Arquivos de texto", "*.txt")],
         title="Escolha onde salvar seu arquivo"
     )
+    if caminho != "":
+        with open('exemplo.txt', 'a', encoding='utf-8') as arquivo:
+            for linha in linhas:
+                arquivo.write(f'{linha["texto"]}\n')
+
 
 rodando = True
 while rodando:
