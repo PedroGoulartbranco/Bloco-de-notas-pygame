@@ -16,6 +16,7 @@ cor_fonte_geral = "black"
 cor_botoes_complementares = "#E0E0E0"
 mudancas = False
 pode_mexer = True
+arquivo_atual = None
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -277,14 +278,17 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
+    global arquivo_atual
     mostrar_janela_sair_salvar = True
-    caminho = filedialog.asksaveasfilename(
-        defaultextension=".txt",
-        filetypes=[("Arquivos de texto", "*.txt")],
-        title="Escolha onde salvar seu arquivo"
-    )
-    if caminho:
-        with open(caminho, 'w', encoding='utf-8') as arquivo:
+    if arquivo_atual == None:
+        caminho = filedialog.asksaveasfilename(
+            defaultextension=".txt",
+            filetypes=[("Arquivos de texto", "*.txt")],
+            title="Escolha onde salvar seu arquivo"
+        )
+        arquivo_atual = caminho
+    if arquivo_atual:
+        with open(arquivo_atual, 'w', encoding='utf-8') as arquivo:
             for linha in linhas:
                 arquivo.write(f'{linha["texto"]}\n')
         mostrar_janela_sair_salvar = False
@@ -352,13 +356,14 @@ while rodando:
                     botoes_do_menu_aparecer = False
                     mouse_encima_do_menu_de_opcoes = False
                 if botoes_do_menu_aparecer:
-                    if botao_novo_arquivo.collidepoint(posicao_mouse):
+                    if botao_novo_arquivo.collidepoint(posicao_mouse) or botao_salvar_arquivo.collidepoint(posicao_mouse):
                         esta_vazio = verificar_se_ta_vazio()
                         if esta_vazio:
                             botoes_do_menu_aparecer = False
                             mouse_encima_do_menu_de_opcoes = False
                         else:
                             mostrar_janela_sair_salvar = True
+
                 
             
 
