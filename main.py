@@ -276,16 +276,18 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
+    mostrar_janela_sair_salvar = True
     caminho = filedialog.asksaveasfilename(
         defaultextension=".txt",
         filetypes=[("Arquivos de texto", "*.txt")],
         title="Escolha onde salvar seu arquivo"
     )
-    if caminho != "":
-        with open('exemplo.txt', 'a', encoding='utf-8') as arquivo:
+    if caminho:
+        with open(caminho, 'w', encoding='utf-8') as arquivo:
             for linha in linhas:
                 arquivo.write(f'{linha["texto"]}\n')
-
+        mostrar_janela_sair_salvar = False
+    return mostrar_janela_sair_salvar
 
 rodando = True
 while rodando:
@@ -324,7 +326,7 @@ while rodando:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mostrar_janela_sair_salvar:
                 if botao_salvar.collidepoint(posicao_mouse):
-                    salvar()
+                    mostrar_janela_sair_salvar = salvar()
                 if botao_nao_salvar.collidepoint(posicao_mouse):
                     rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
