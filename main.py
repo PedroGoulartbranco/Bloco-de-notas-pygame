@@ -28,6 +28,7 @@ tamanho_fonte_texto = 22
 tamanho_fonte_aumentar_dominuir = 28
 
 fonte_menu = pygame.font.SysFont('consolas', 15)
+fonte_botoes_opcoes_menu = pygame.font.SysFont('consolas', 13)
 fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('consolas', tamanho_fonte_aumentar_dominuir)
 fonte_sinal_mais = pygame.font.SysFont('consolas', 19) #O sinal de + é muito grande
@@ -62,7 +63,7 @@ tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
 botoes_do_menu_aparecer = False
-menu_opcoes = pygame.Rect(0, 30, 200, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
+menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
 abriu_menu_primeira_vez = False #Para nao fechar automaticamente quando fecha 
 botao_novo_arquivo = botao_abrir_arquivo = botao_salvar_arquivo = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
@@ -132,11 +133,12 @@ def desenhar_menu_opcoes():
         sombra_menu_opcoes.fill((0,0,0,15))
         tela.blit(sombra_menu_opcoes, (3, 38))
 
-    cor_botao_novo = cor_botao_abrir = cor_botao_salvar = "#F8EDED"
+    cor_botao_novo = cor_botao_abrir = cor_botao_salvar = cor_botao_salvar_como = "#F8EDED"
 
     botao_novo_arquivo = pygame.Rect(0, 35, 200, 20)
     botao_abrir_arquivo = pygame.Rect(0, 55, 200, 20)
     botao_salvar_arquivo = pygame.Rect(0, 75, 200, 20)
+    botao_salvar_arquivo_como = pygame.Rect(0, 95, 200, 20)
     
     pygame.draw.rect(tela, "#F8EDED", menu_opcoes)
 
@@ -146,24 +148,35 @@ def desenhar_menu_opcoes():
         cor_botao_abrir = (229, 241, 251)
     if botao_salvar_arquivo.collidepoint(posicao_mouse):
         cor_botao_salvar = (229, 241, 251)
+    if botao_salvar_arquivo_como.collidepoint(posicao_mouse):
+        cor_botao_salvar_como = (229, 241, 251)
 
     #--------- Desenhar Botões --------
     pygame.draw.rect(tela, cor_botao_novo, botao_novo_arquivo)
-    texto_botao_novo_arquivo =  fonte_menu.render("Novo        Ctrl + n", True, "black")
-    coordenada_texto_botao_novo_arquivo = texto_botao_novo_arquivo.get_rect(center=botao_novo_arquivo.center)
+    texto_botao_novo_arquivo =  fonte_botoes_opcoes_menu.render("Novo                 Ctrl + n", True, "black")
+    coordenada_texto_botao_novo_arquivo = texto_botao_novo_arquivo.get_rect(midleft=botao_novo_arquivo.midleft)
+    coordenada_texto_botao_novo_arquivo.x += 10
     tela.blit(texto_botao_novo_arquivo, coordenada_texto_botao_novo_arquivo)
 
     pygame.draw.rect(tela, cor_botao_abrir, botao_abrir_arquivo)
-    texto_botao_abrir_arquivo =  fonte_menu.render("Abrir...    Ctrl + O", True, "black")
-    coordenada_texto_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(center=botao_abrir_arquivo.center)
+    texto_botao_abrir_arquivo =  fonte_botoes_opcoes_menu.render("Abrir...             Ctrl + O", True, "black")
+    coordenada_texto_abrir_arquivo = texto_botao_abrir_arquivo.get_rect(midleft=botao_abrir_arquivo.midleft)
+    coordenada_texto_abrir_arquivo.x += 10
     tela.blit(texto_botao_abrir_arquivo, coordenada_texto_abrir_arquivo)
 
     pygame.draw.rect(tela, cor_botao_salvar, botao_salvar_arquivo)
-    texto_botao_salvar_arquivo =  fonte_menu.render("Salvar...   Ctrl + S", True, "black")
-    coordenada_texto_salvar_arquivo = texto_botao_salvar_arquivo.get_rect(center=botao_salvar_arquivo.center)
+    texto_botao_salvar_arquivo =  fonte_botoes_opcoes_menu.render("Salvar               Ctrl + S", True, "black")
+    coordenada_texto_salvar_arquivo = texto_botao_salvar_arquivo.get_rect(midleft=botao_salvar_arquivo.midleft)
+    coordenada_texto_salvar_arquivo.x += 10
     tela.blit(texto_botao_salvar_arquivo, coordenada_texto_salvar_arquivo)
 
-    return botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo
+    pygame.draw.rect(tela, cor_botao_salvar_como, botao_salvar_arquivo_como)
+    texto_botao_salvar_arquivo_como =  fonte_botoes_opcoes_menu.render("Salvar Como...   Ctrl + Shift + S", True, "black")
+    coordenada_texto_salvar_arquivo_como = texto_botao_salvar_arquivo_como.get_rect(midleft=botao_salvar_arquivo_como.midleft)
+    coordenada_texto_salvar_arquivo_como.x += 10
+    tela.blit(texto_botao_salvar_arquivo_como, coordenada_texto_salvar_arquivo_como)
+
+    return botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo, botao_salvar_arquivo_como
 
 def escrever(letra):
     linhas[linha_atual]["texto"] += letra
@@ -456,7 +469,7 @@ while rodando:
 
     
     if botoes_do_menu_aparecer:
-        botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo = desenhar_menu_opcoes()
+        botao_novo_arquivo, botao_abrir_arquivo, botao_salvar_arquivo, botao_salvar_arquivo_como = desenhar_menu_opcoes()
 
         if menu_opcoes.collidepoint(posicao_mouse):
             mouse_encima_do_menu_de_opcoes = True
