@@ -15,6 +15,7 @@ cor_botoes_geral = "white"
 cor_fonte_geral = "black"
 cor_botoes_complementares = "#E0E0E0"
 mudancas = False
+pode_mexer = True
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -300,29 +301,33 @@ while rodando:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
                 #linhas.insert(linha_atual+1, "")
-                linhas, linha_atual = pular_linha(linhas, linha_atual)
+                if pode_mexer:
+                    linhas, linha_atual = pular_linha(linhas, linha_atual)
             elif event.key == pygame.K_BACKSPACE: #Apagar
                 #linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
-                segurou_excluir = True
+                if pode_mexer:
+                    segurou_excluir = True
             else:
-                if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT:
-                    tempo_que_letra_clicada = pygame.time.get_ticks()
-                    segurou = True
-                    letra = event.unicode
-                if event.key == pygame.K_BACKSPACE:
-                    tempo_botao_excluir_clicado = pygame.time.get_ticks()
-                if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
-                    cursor_automatico = False
-                    numero_seta = event.key
+                if pode_mexer:
+                    if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT:
+                        tempo_que_letra_clicada = pygame.time.get_ticks()
+                        segurou = True
+                        letra = event.unicode
+                    if event.key == pygame.K_BACKSPACE:
+                        tempo_botao_excluir_clicado = pygame.time.get_ticks()
+                    if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+                        cursor_automatico = False
+                        numero_seta = event.key
                 #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
-            segurou = False
-            escreveu_primeira_letra = False
-            segurou_excluir = False
-            excluiu_primeira_vez =False
-            primeira_vez_segurando_tecla  = False
-            tempo_que_letra_foi_solta = pygame.time.get_ticks()
-            tempo_backspace_solto = pygame.time.get_ticks()
+            if pode_mexer:
+                segurou = False
+                escreveu_primeira_letra = False
+                segurou_excluir = False
+                excluiu_primeira_vez =False
+                primeira_vez_segurando_tecla  = False
+                tempo_que_letra_foi_solta = pygame.time.get_ticks()
+                tempo_backspace_solto = pygame.time.get_ticks()
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mostrar_janela_sair_salvar:
                 if botao_salvar.collidepoint(posicao_mouse):
@@ -331,28 +336,29 @@ while rodando:
                     rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
                     mostrar_janela_sair_salvar = False
-            if botao_texto_menos.collidepoint(posicao_mouse):
-                if tamanho_fonte_texto > 12:
-                    tamanho_fonte_texto -= 1
-                    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
-            if botao_texto_fonte_mais.collidepoint(posicao_mouse):
-                if tamanho_fonte_texto < 120:
-                    tamanho_fonte_texto += 1
-                    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
-            if botao_arquivo.collidepoint(posicao_mouse):
-                botoes_do_menu_aparecer = not botoes_do_menu_aparecer
-                abriu_menu_primeira_vez = True
-            if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
-                botoes_do_menu_aparecer = False
-                mouse_encima_do_menu_de_opcoes = False
-            if botoes_do_menu_aparecer:
-                if botao_novo_arquivo.collidepoint(posicao_mouse):
-                    esta_vazio = verificar_se_ta_vazio()
-                    if esta_vazio:
-                        botoes_do_menu_aparecer = False
-                        mouse_encima_do_menu_de_opcoes = False
-                    else:
-                        mostrar_janela_sair_salvar = True
+            if pode_mexer:
+                if botao_texto_menos.collidepoint(posicao_mouse):
+                    if tamanho_fonte_texto > 12:
+                        tamanho_fonte_texto -= 1
+                        fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+                if botao_texto_fonte_mais.collidepoint(posicao_mouse):
+                    if tamanho_fonte_texto < 120:
+                        tamanho_fonte_texto += 1
+                        fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+                if botao_arquivo.collidepoint(posicao_mouse):
+                    botoes_do_menu_aparecer = not botoes_do_menu_aparecer
+                    abriu_menu_primeira_vez = True
+                if mouse_encima_do_menu_de_opcoes == False and botoes_do_menu_aparecer == True and abriu_menu_primeira_vez == False:
+                    botoes_do_menu_aparecer = False
+                    mouse_encima_do_menu_de_opcoes = False
+                if botoes_do_menu_aparecer:
+                    if botao_novo_arquivo.collidepoint(posicao_mouse):
+                        esta_vazio = verificar_se_ta_vazio()
+                        if esta_vazio:
+                            botoes_do_menu_aparecer = False
+                            mouse_encima_do_menu_de_opcoes = False
+                        else:
+                            mostrar_janela_sair_salvar = True
                 
             
 
@@ -454,8 +460,11 @@ while rodando:
             mouse_encima_do_menu_de_opcoes = False
             abriu_menu_primeira_vez = False
     if mostrar_janela_sair_salvar:
+        pode_mexer = False
         botoes_do_menu_aparecer = False
         botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair = criar_janela_de_saida()
+    else:
+        pode_mexer = True
     
 
     pygame.display.flip()   # atualiza a tela
