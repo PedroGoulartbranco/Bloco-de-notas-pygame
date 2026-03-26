@@ -2,11 +2,12 @@ import pygame
 import sys
 from tkinter import filedialog
 import os 
-# inicia o pygame
+
 pygame.init()
 
 # cria a janela
 LARGURA, ALTURA = 1000, 600
+nome_arquivo = None
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("PedroNote")
 clock = pygame.time.Clock()
@@ -291,7 +292,7 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
-    global arquivo_atual
+    global arquivo_atual, nome_arquivo
     mostrar_janela_sair_salvar = True
     if arquivo_atual == None:
         caminho = filedialog.asksaveasfilename(
@@ -300,6 +301,7 @@ def salvar():
             title="Escolha onde salvar seu arquivo"
         )
         arquivo_atual = caminho
+        nome_arquivo = os.path.basename(arquivo_atual)
     if arquivo_atual:
         with open(arquivo_atual, 'w', encoding='utf-8') as arquivo:
             for linha in linhas:
@@ -385,7 +387,8 @@ while rodando:
 
                 
             
-
+    if nome_arquivo != None:
+        pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
 
