@@ -7,7 +7,7 @@ pygame.init()
 
 # cria a janela
 LARGURA, ALTURA = 1000, 600
-nome_arquivo = None
+nome_arquivo = tipo_arquivo = None
 tela = pygame.display.set_mode((LARGURA, ALTURA))
 pygame.display.set_caption("PedroNote")
 clock = pygame.time.Clock()
@@ -310,18 +310,47 @@ def salvar():
     return mostrar_janela_sair_salvar
 
 def abrir():
-    global arquivo_atual, nome_arquivo
+    global arquivo_atual, nome_arquivo, tipo_arquivo
     caminho = filedialog.askopenfilename(
         title="Selecione um arquivo",
         filetypes=(("Arquivos de Texto", "*.txt"), ("Documentos PDF", "*.pdf*"))
     )
-    arquivo_atual = caminho
+    arquivo_atual , tipo_arquivo = os.path.splitext(caminho)
+    tipo_arquivo = tipo_arquivo.lower()
     nome_arquivo = os.path.basename(arquivo_atual)
+    ler_arquivo(caminho, tipo_arquivo)
     
     return False
 
-def ler_arquivo():
-    global arquivo_atual
+def ler_arquivo(arquivo_atual, tipo_arquivo):
+    if tipo_arquivo == ".txt":
+        ler_arquivo_txt(arquivo_atual)
+
+def ler_arquivo_txt(caminho):
+    global linhas, linha_atual
+    print(caminho)
+    limpar_texto()
+    with open(caminho, 'r') as arquivo:
+        linhas_arquivo = arquivo.readlines()
+    for l in linhas_arquivo:
+        linha_atual_arquivo = ""
+        for indice, caracter in enumerate(l):
+            print(caracter)
+            if caracter != "\n":
+                linha_atual_arquivo += caracter
+                linhas[linha_atual]["texto"] = linha_atual_arquivo
+            else:
+                linha_atual += 1
+                linhas.append({
+                "texto": f""
+                })
+    print(linhas)
+
+def limpar_texto():
+    global linhas
+    linhas = [
+        {"texto": ""}
+    ]
 
 rodando = True
 while rodando:
