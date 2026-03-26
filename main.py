@@ -309,6 +309,20 @@ def salvar():
         mostrar_janela_sair_salvar = False
     return mostrar_janela_sair_salvar
 
+def abrir():
+    global arquivo_atual, nome_arquivo
+    caminho = filedialog.askopenfilename(
+        title="Selecione um arquivo",
+        filetypes=(("Arquivos de Texto", "*.txt"), ("Documentos PDF", "*.pdf*"))
+    )
+    arquivo_atual = caminho
+    nome_arquivo = os.path.basename(arquivo_atual)
+    
+    return False
+
+def ler_arquivo():
+    global arquivo_atual
+
 rodando = True
 while rodando:
     for event in pygame.event.get():
@@ -371,22 +385,21 @@ while rodando:
                     botoes_do_menu_aparecer = False
                     mouse_encima_do_menu_de_opcoes = False
                 if botoes_do_menu_aparecer:
+                    esta_vazio = verificar_se_ta_vazio()
                     if botao_novo_arquivo.collidepoint(posicao_mouse):
-                        esta_vazio = verificar_se_ta_vazio()
                         if esta_vazio:
                             botoes_do_menu_aparecer = False
                             mouse_encima_do_menu_de_opcoes = False
                         else:
                             mostrar_janela_sair_salvar = True
                     if botao_salvar_arquivo.collidepoint(posicao_mouse):
-                        if arquivo_atual != None:
-                            botoes_do_menu_aparecer = salvar()
+                        if esta_vazio:
+                            botoes_do_menu_aparecer = False
+                            mouse_encima_do_menu_de_opcoes = False
                         else:
                             botoes_do_menu_aparecer = salvar()
-                            
-
-                
-            
+                    if botao_abrir_arquivo.collidepoint(posicao_mouse):
+                        botoes_do_menu_aparecer = abrir()
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
