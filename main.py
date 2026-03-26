@@ -248,7 +248,7 @@ def criar_janela_de_saida():
     return botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def criar_botoes_sair_salvar_janela():
-    global cor_botoes_geral, cor_principal_geral, cor_botoes_complementares
+    global cor_botoes_geral, cor_principal_geral, cor_botoes_complementares, arquivo_atual
     posicao_mouse = pygame.mouse.get_pos()
     cor_botao_salvar = cor_botao_nao_salvar = cor_botao_cancelar = cor_botoes_complementares
     cor_botao_X = cor_botoes_geral
@@ -348,7 +348,7 @@ while rodando:
         if event.type == pygame.MOUSEBUTTONDOWN:
             if mostrar_janela_sair_salvar:
                 if botao_salvar.collidepoint(posicao_mouse):
-                    mostrar_janela_sair_salvar = salvar()
+                        mostrar_janela_sair_salvar = salvar()
                 if botao_nao_salvar.collidepoint(posicao_mouse):
                     rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
@@ -369,13 +369,19 @@ while rodando:
                     botoes_do_menu_aparecer = False
                     mouse_encima_do_menu_de_opcoes = False
                 if botoes_do_menu_aparecer:
-                    if botao_novo_arquivo.collidepoint(posicao_mouse) or botao_salvar_arquivo.collidepoint(posicao_mouse):
+                    if botao_novo_arquivo.collidepoint(posicao_mouse):
                         esta_vazio = verificar_se_ta_vazio()
                         if esta_vazio:
                             botoes_do_menu_aparecer = False
                             mouse_encima_do_menu_de_opcoes = False
                         else:
                             mostrar_janela_sair_salvar = True
+                    if botao_salvar_arquivo.collidepoint(posicao_mouse):
+                        if arquivo_atual != None:
+                            botoes_do_menu_aparecer = salvar()
+                        else:
+                            botoes_do_menu_aparecer = salvar()
+                            
 
                 
             
