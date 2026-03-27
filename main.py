@@ -2,6 +2,7 @@ import pygame
 import sys
 from tkinter import filedialog
 import os 
+from fpdf import FPDF
 
 pygame.init()
 
@@ -308,6 +309,9 @@ def salvar():
                 arquivo.write(f'{linha["texto"]}\n')
         mostrar_janela_sair_salvar = False
     return mostrar_janela_sair_salvar
+
+def salvar_pdf():
+    print("fazer ainda")
 
 def abrir():
     global arquivo_atual, nome_arquivo, tipo_arquivo
