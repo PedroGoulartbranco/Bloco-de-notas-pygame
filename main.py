@@ -298,17 +298,25 @@ def salvar():
     if arquivo_atual == None:
         caminho = filedialog.asksaveasfilename(
             defaultextension=".txt",
-            filetypes=[("Arquivos de texto", "*.txt")],
+            filetypes=[("Arquivos de texto", "*.txt"), ("Arquivo PDFs", "*.pdf")],
             title="Escolha onde salvar seu arquivo"
         )
         arquivo_atual = caminho
         nome_arquivo = os.path.basename(arquivo_atual)
     if arquivo_atual:
-        with open(arquivo_atual, 'w', encoding='utf-8') as arquivo:
+        arquivo_atual , tipo_arquivo = os.path.splitext(caminho)
+        tipo_arquivo = tipo_arquivo.lower()
+        if tipo_arquivo == ".txt":
+            mostrar_janela_sair_salvar = salvar_txt(caminho, linhas)
+        if tipo_arquivo == ".pdf":
+            mostrar_janela_sair_salvar = salvar_pdf(caminho, linhas)
+    return mostrar_janela_sair_salvar
+
+def salvar_txt(arquivo_atual, linhas_arquivo):
+    with open(arquivo_atual, 'w', encoding='utf-8') as arquivo:
             for linha in linhas:
                 arquivo.write(f'{linha["texto"]}\n')
-        mostrar_janela_sair_salvar = False
-    return mostrar_janela_sair_salvar
+    return False
 
 def salvar_pdf():
     print("fazer ainda")
