@@ -3,6 +3,7 @@ import sys
 from tkinter import filedialog
 import os 
 from fpdf import FPDF
+from pypdf import PdfReader
 
 pygame.init()
 
@@ -294,7 +295,7 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
-    global arquivo_atual, nome_arquivo
+    global arquivo_atual, nome_arquivo, tamanho_fonte_texto
     mostrar_janela_sair_salvar = True
     if arquivo_atual == None:
         caminho = filedialog.asksaveasfilename(
@@ -310,7 +311,7 @@ def salvar():
         if tipo_arquivo == ".txt":
             mostrar_janela_sair_salvar = salvar_txt(arquivo_atual, linhas)
         if tipo_arquivo == ".pdf":
-            mostrar_janela_sair_salvar = salvar_pdf(arquivo_atual, linhas)
+            mostrar_janela_sair_salvar = salvar_pdf(arquivo_atual, linhas, tamanho_fonte_texto)
     return mostrar_janela_sair_salvar
 
 def salvar_txt(arquivo_atual, linhas_arquivo):
@@ -319,12 +320,25 @@ def salvar_txt(arquivo_atual, linhas_arquivo):
                 arquivo.write(f'{linha["texto"]}\n')
     return False
 
-def salvar_pdf(caminho, linhas_arquivo):
+def salvar_pdf(caminho, linhas_arquivo, tamanho_fonte):
     pdf = FPDF()
+    pdf.set_auto_page_break(auto=True, margin=15) #Quando chega perto do final da folha ele cria uma nova pagina
     pdf.add_page()
-    pdf.set_font('helvetica', size=15)
+    pdf.set_margins(10, 10, 10)
+
+    pdf.set_char_spacing(0)
+    largura_para_texto = pdf.epw
+    pdf.set_font('helvetica', size=tamanho_fonte)
+    altura_linha = (tamanho_fonte / 2) - 1.5
+    texto_completo = ""
     for linha in linhas_arquivo:
-        pdf.multi_cell(w=0, h=10, text=linha["texto"])
+        linha_agora = ""
+        if linha["texto"] == "":
+            linha_agora += " "
+        else:
+            linha_agora += linha["texto"]
+        texto_completo += linha_agora + "\n"
+    pdf.multi_cell(w=0, h=altura_linha, text=texto_completo)
     pdf.output(caminho)
 
 def abrir():
@@ -366,7 +380,12 @@ def ler_arquivo_txt(caminho):
                 })
 
 def ler_arquivo_pdf(caminho):
-    pass
+    global linhas, linha_atual
+    leitor = PdfReader(caminho)
+    texto = ""
+    for pagina in leitor.pages:
+        texto += pagina.extract_text()
+    print(texto)
 
 def limpar_texto():
     global linhas
