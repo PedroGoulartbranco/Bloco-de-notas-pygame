@@ -29,11 +29,14 @@ pygame.display.set_icon(icone)
 
 tamanho_fonte_texto = 22
 tamanho_fonte_aumentar_dominuir = 28
+fonte_atual = 'ARIAL.TTF'
 
-fonte_atual = 'consolas'
+PASTA_ATUAL = os.path.dirname(__file__)
+caminho_fonte_texto = os.path.join(PASTA_ATUAL, "fonts", fonte_atual)
+
 fonte_menu = pygame.font.SysFont('consolas', 15)
 fonte_botoes_opcoes_menu = pygame.font.SysFont('consolas', 13)
-fonte_texto = pygame.font.SysFont(fonte_atual, tamanho_fonte_texto)
+fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('consolas', tamanho_fonte_aumentar_dominuir)
 fonte_sinal_mais = pygame.font.SysFont('consolas', 19) #O sinal de + é muito grande
 
@@ -326,9 +329,12 @@ def salvar_pdf(caminho, linhas_arquivo, tamanho_fonte):
     pdf.add_page()
     pdf.set_margins(10, 10, 10)
 
+    pasta_fontes = os.path.join(os.path.dirname(__file__), "fonts")
+    pdf.add_font("Arial", "", os.path.join(pasta_fontes, "ARIAL.TTF"))
+
     pdf.set_char_spacing(0)
     largura_para_texto = pdf.epw
-    pdf.set_font('helvetica', size=tamanho_fonte)
+    pdf.set_font('Arial', size=tamanho_fonte)
     altura_linha = (tamanho_fonte / 2) - 1.5
     texto_completo = ""
     for linha in linhas_arquivo:
@@ -472,7 +478,7 @@ while rodando:
                         botoes_do_menu_aparecer = abrir()
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
-    fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto) #Atualiza a fonte
+    fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
     posicao_mouse = pygame.mouse.get_pos()
 
     tela.fill("white")  
