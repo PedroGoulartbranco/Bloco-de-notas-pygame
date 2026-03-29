@@ -29,9 +29,10 @@ pygame.display.set_icon(icone)
 tamanho_fonte_texto = 22
 tamanho_fonte_aumentar_dominuir = 28
 
+fonte_atual = 'consolas'
 fonte_menu = pygame.font.SysFont('consolas', 15)
 fonte_botoes_opcoes_menu = pygame.font.SysFont('consolas', 13)
-fonte_texto = pygame.font.SysFont('consolas', tamanho_fonte_texto)
+fonte_texto = pygame.font.SysFont(fonte_atual, tamanho_fonte_texto)
 fonte_botao_menos_mais = pygame.font.SysFont('consolas', tamanho_fonte_aumentar_dominuir)
 fonte_sinal_mais = pygame.font.SysFont('consolas', 19) #O sinal de + é muito grande
 
@@ -304,22 +305,27 @@ def salvar():
         arquivo_atual = caminho
         nome_arquivo = os.path.basename(arquivo_atual)
     if arquivo_atual:
-        arquivo_atual , tipo_arquivo = os.path.splitext(caminho)
+        _ , tipo_arquivo = os.path.splitext(arquivo_atual)
         tipo_arquivo = tipo_arquivo.lower()
         if tipo_arquivo == ".txt":
-            mostrar_janela_sair_salvar = salvar_txt(caminho, linhas)
+            mostrar_janela_sair_salvar = salvar_txt(arquivo_atual, linhas)
         if tipo_arquivo == ".pdf":
-            mostrar_janela_sair_salvar = salvar_pdf(caminho, linhas)
+            mostrar_janela_sair_salvar = salvar_pdf(arquivo_atual, linhas)
     return mostrar_janela_sair_salvar
 
 def salvar_txt(arquivo_atual, linhas_arquivo):
     with open(arquivo_atual, 'w', encoding='utf-8') as arquivo:
-            for linha in linhas:
+            for linha in linhas_arquivo:
                 arquivo.write(f'{linha["texto"]}\n')
     return False
 
-def salvar_pdf():
-    print("fazer ainda")
+def salvar_pdf(caminho, linhas_arquivo):
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font('helvetica', size=15)
+    for linha in linhas_arquivo:
+        pdf.multi_cell(w=0, h=10, text=linha["texto"])
+    pdf.output(caminho)
 
 def abrir():
     global arquivo_atual, nome_arquivo, tipo_arquivo
@@ -337,6 +343,8 @@ def abrir():
 def ler_arquivo(arquivo_atual, tipo_arquivo):
     if tipo_arquivo == ".txt":
         ler_arquivo_txt(arquivo_atual)
+    if tipo_arquivo == '.pdf':
+        ler_arquivo_pdf(arquivo_atual)
 
 def ler_arquivo_txt(caminho):
     global linhas, linha_atual
@@ -356,7 +364,9 @@ def ler_arquivo_txt(caminho):
                 linhas.append({
                 "texto": f""
                 })
-    print(linhas)
+
+def ler_arquivo_pdf(caminho):
+    pass
 
 def limpar_texto():
     global linhas
