@@ -20,6 +20,7 @@ cor_botoes_complementares = "#E0E0E0"
 mudancas = False
 pode_mexer = True
 arquivo_atual = None
+texto_surface = None
 
 #icones
 icone = pygame.image.load("img/icon.ico")
@@ -65,6 +66,7 @@ cursor_automatico = True
 numero_seta = 0
 
 mostrar_janela_sair_salvar = False
+clicou_no_botao_novo = False
 
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
@@ -391,7 +393,15 @@ def ler_arquivo_pdf(caminho):
     texto = ""
     for pagina in leitor.pages:
         texto += pagina.extract_text()
-    print(texto)
+    linha_atual = 0
+    for linha in texto:
+        if linha != "\n":
+            linhas[linha_atual]["texto"] += linha
+        else:
+            linha_atual += 1
+            linhas.append({
+                "texto": f""
+                })
 
 def limpar_texto():
     global linhas
@@ -441,6 +451,9 @@ while rodando:
             if mostrar_janela_sair_salvar:
                 if botao_salvar.collidepoint(posicao_mouse):
                         mostrar_janela_sair_salvar = salvar()
+                        if clicou_no_botao_novo:
+                            limpar_texto()
+                            clicou_no_botao_novo = False
                 if botao_nao_salvar.collidepoint(posicao_mouse):
                     rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
@@ -467,6 +480,7 @@ while rodando:
                             botoes_do_menu_aparecer = False
                             mouse_encima_do_menu_de_opcoes = False
                         else:
+                            clicou_no_botao_novo = True
                             mostrar_janela_sair_salvar = True
                     if botao_salvar_arquivo.collidepoint(posicao_mouse):
                         if esta_vazio:
