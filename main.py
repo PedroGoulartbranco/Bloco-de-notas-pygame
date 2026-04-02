@@ -454,8 +454,15 @@ while rodando:
                         if clicou_no_botao_novo:
                             limpar_texto()
                             clicou_no_botao_novo = False
+                            arquivo_atual = None
+                            mostrar_janela_sair_salvar = False
                 if botao_nao_salvar.collidepoint(posicao_mouse):
-                    rodando = False
+                    if clicou_no_botao_novo:
+                        limpar_texto()
+                        mostrar_janela_sair_salvar = False
+                        arquivo_atual = None
+                    else:
+                        rodando = False
                 if botao_cancelar.collidepoint(posicao_mouse) or botao_X_sair.collidepoint(posicao_mouse):
                     mostrar_janela_sair_salvar = False
             if pode_mexer:
