@@ -300,7 +300,7 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
-    global arquivo_atual, nome_arquivo, tamanho_fonte_texto
+    global arquivo_atual, nome_arquivo, tamanho_fonte_texto, clicou_no_botao_novo
     mostrar_janela_sair_salvar = True
     if arquivo_atual == None:
         caminho = filedialog.asksaveasfilename(
@@ -309,7 +309,8 @@ def salvar():
             title="Escolha onde salvar seu arquivo"
         )
         arquivo_atual = caminho
-        nome_arquivo = os.path.basename(arquivo_atual)
+        if not clicou_no_botao_novo:
+            nome_arquivo = os.path.basename(arquivo_atual)
     if arquivo_atual:
         _ , tipo_arquivo = os.path.splitext(arquivo_atual)
         tipo_arquivo = tipo_arquivo.lower()
