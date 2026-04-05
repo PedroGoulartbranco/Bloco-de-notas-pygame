@@ -213,11 +213,13 @@ def pular_linha(linhas, linha_atual):
     return linhas, linha_atual
 
 def verificar_se_ta_vazio():
+    global linhas
     vazio = False
-    for linha in linhas:
-        numero_caracteres = len(linha['texto'])
+    for linha_for in linhas:
+        numero_caracteres = len(linha_for['texto'])
         if numero_caracteres > 0:
             vazio = False
+            break
         else:
             vazio = True
     return vazio
@@ -371,6 +373,7 @@ def ler_arquivo(arquivo_atual, tipo_arquivo):
 
 def ler_arquivo_txt(caminho):
     global linhas, linha_atual
+    linha_atual = 0
     print(caminho)
     limpar_texto()
     with open(caminho, 'r') as arquivo:
