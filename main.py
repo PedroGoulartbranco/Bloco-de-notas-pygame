@@ -68,6 +68,8 @@ numero_seta = 0
 mostrar_janela_sair_salvar = False
 clicou_no_botao_novo = False
 
+arquivo_ja_salvo = False
+
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
@@ -302,7 +304,7 @@ def criar_botoes_sair_salvar_janela():
     return  botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair
 
 def salvar():
-    global arquivo_atual, nome_arquivo, tamanho_fonte_texto, clicou_no_botao_novo
+    global arquivo_atual, nome_arquivo, tamanho_fonte_texto, clicou_no_botao_novo, arquivo_ja_salvo
     mostrar_janela_sair_salvar = True
     if arquivo_atual == None:
         caminho = filedialog.asksaveasfilename(
@@ -320,6 +322,7 @@ def salvar():
             mostrar_janela_sair_salvar = salvar_txt(arquivo_atual, linhas)
         if tipo_arquivo == ".pdf":
             mostrar_janela_sair_salvar = salvar_pdf(arquivo_atual, linhas, tamanho_fonte_texto)
+    arquivo_ja_salvo = True
     return mostrar_janela_sair_salvar
 
 def salvar_txt(arquivo_atual, linhas_arquivo):
@@ -432,6 +435,7 @@ while rodando:
                     segurou_excluir = True
             else:
                 if pode_mexer:
+                    arquivo_ja_salvo = False
                     if event.key != pygame.K_LSHIFT and event.key != pygame.K_RSHIFT:
                         tempo_que_letra_clicada = pygame.time.get_ticks()
                         segurou = True
@@ -500,7 +504,10 @@ while rodando:
                         else:
                             botoes_do_menu_aparecer = salvar()
                     if botao_abrir_arquivo.collidepoint(posicao_mouse):
-                        botoes_do_menu_aparecer = abrir()
+                        if not arquivo_ja_salvo and not verificar_se_ta_vazio():
+                            mostrar_janela_sair_salvar = True
+                        else:
+                            botoes_do_menu_aparecer = abrir()
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
