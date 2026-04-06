@@ -77,7 +77,7 @@ botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
 abriu_menu_primeira_vez = False #Para nao fechar automaticamente quando fecha 
-botao_novo_arquivo = botao_abrir_arquivo = botao_salvar_arquivo = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
+botao_novo_arquivo = botao_abrir_arquivo = botao_salvar_arquivo = botao_salvar_arquivo_como = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
 botao_salvar = botao_nao_salvar = botao_cancelar = botao_X_sair = pygame.Rect(0, 35, 200, 20) #Rect provisorio só para usar no loop de eventos
 
 def desenhar_texto():
@@ -508,6 +508,13 @@ while rodando:
                             mostrar_janela_sair_salvar = True
                         else:
                             botoes_do_menu_aparecer = abrir()
+                    if botao_salvar_arquivo_como.collidepoint(posicao_mouse):
+                        if esta_vazio:
+                            botoes_do_menu_aparecer = False
+                            mouse_encima_do_menu_de_opcoes = False
+                        else:
+                            arquivo_atual = None
+                            botoes_do_menu_aparecer = salvar()
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
