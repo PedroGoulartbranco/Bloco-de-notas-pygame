@@ -497,24 +497,19 @@ while rodando:
                         else:
                             clicou_no_botao_novo = True
                             mostrar_janela_sair_salvar = True
-                    if botao_salvar_arquivo.collidepoint(posicao_mouse):
+                    if botao_salvar_arquivo.collidepoint(posicao_mouse) or botao_salvar_arquivo_como.collidepoint(posicao_mouse):
                         if esta_vazio:
                             botoes_do_menu_aparecer = False
                             mouse_encima_do_menu_de_opcoes = False
                         else:
+                            if botao_salvar_arquivo_como.collidepoint(posicao_mouse):
+                                arquivo_atual = None
                             botoes_do_menu_aparecer = salvar()
                     if botao_abrir_arquivo.collidepoint(posicao_mouse):
                         if not arquivo_ja_salvo and not verificar_se_ta_vazio():
                             mostrar_janela_sair_salvar = True
                         else:
                             botoes_do_menu_aparecer = abrir()
-                    if botao_salvar_arquivo_como.collidepoint(posicao_mouse):
-                        if esta_vazio:
-                            botoes_do_menu_aparecer = False
-                            mouse_encima_do_menu_de_opcoes = False
-                        else:
-                            arquivo_atual = None
-                            botoes_do_menu_aparecer = salvar()
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
