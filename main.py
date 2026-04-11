@@ -79,6 +79,9 @@ cor_quadrado_digitar_fixo = "red"
 cor_quadrado_digitar_nao_fixo = "blue"
 VELOCIDADE_SCROLL = 5
 
+scroll_fixo = pygame.Rect(LARGURA - 25, 30, 25, ALTURA)
+cor_scroll_fixo = "#777070"
+
 botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
@@ -519,11 +522,10 @@ while rodando:
         if event.type == pygame.MOUSEWHEEL:
             if pode_mexer:
                 if event.y > 0:
-                    print(event.y)
-                    onde_digitar.y -= VELOCIDADE_SCROLL
-                    quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
+                    if quadrado_digitar_nao_fixo.y >= 35:
+                        onde_digitar.y -= VELOCIDADE_SCROLL
+                        quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
                 if event.y < 0:
-                    print(event.y)
                     onde_digitar.y += VELOCIDADE_SCROLL
                     quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
     if nome_arquivo != None:
@@ -540,8 +542,8 @@ while rodando:
     pygame.draw.rect(tela, "white", onde_digitar) 
     pygame.draw.rect(tela, cor_quadrado_digitar_fixo, quadrado_digitar_fixo)
     pygame.draw.rect(tela, cor_quadrado_digitar_nao_fixo, quadrado_digitar_nao_fixo)
-    #quadrado_digitar_nao_fixo.y += 2
-    #onde_digitar.y += 2
+    
+    pygame.draw.rect(tela, cor_scroll_fixo, scroll_fixo)
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
@@ -549,20 +551,20 @@ while rodando:
 
     if segurou:
         if not escreveu_primeira_letra:
-            if cursor_x >= 970:
+            if cursor_x >= 970 - 10:
                 linhas, linha_atual = pular_linha(linhas, linha_atual)
             linhas[linha_atual]["texto"] += letra
             escreveu_primeira_letra = True
         if (tempo_atual - tempo_que_letra_clicada >= 500):
             if not primeira_vez_segurando_tecla :
-                if cursor_x >= 970:
+                if cursor_x >= 970 - 10:
                     linhas, linha_atual = pular_linha(linhas, linha_atual)
                 tempo_ultima_letra_modificada = pygame.time.get_ticks()
                 linhas[linha_atual]["texto"] += letra
                 primeira_vez_segurando_tecla = True
             else:
                 if (tempo_atual - tempo_ultima_letra_modificada >= 50):
-                    if cursor_x >= 970:
+                    if cursor_x >= 970 - 10:
                         linhas, linha_atual = pular_linha(linhas, linha_atual)
                     tempo_ultima_letra_modificada = pygame.time.get_ticks()
                     linhas[linha_atual]["texto"] += letra
