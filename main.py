@@ -73,6 +73,12 @@ arquivo_ja_salvo = False
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
+quadrado_digitar_fixo = pygame.Rect(0, 30, LARGURA, ALTURA)
+quadrado_digitar_nao_fixo = pygame.Rect(0, 30, LARGURA, ALTURA)
+cor_quadrado_digitar_fixo = "red"
+cor_quadrado_digitar_nao_fixo = "blue"
+VELOCIDADE_SCROLL = 5
+
 botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
 mouse_encima_do_menu_de_opcoes = False
@@ -510,6 +516,16 @@ while rodando:
                             mostrar_janela_sair_salvar = True
                         else:
                             botoes_do_menu_aparecer = abrir()
+        if event.type == pygame.MOUSEWHEEL:
+            if pode_mexer:
+                if event.y > 0:
+                    print(event.y)
+                    onde_digitar.y -= VELOCIDADE_SCROLL
+                    quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
+                if event.y < 0:
+                    print(event.y)
+                    onde_digitar.y += VELOCIDADE_SCROLL
+                    quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
@@ -522,6 +538,10 @@ while rodando:
     desenhar_texto()
 
     pygame.draw.rect(tela, "white", onde_digitar) 
+    pygame.draw.rect(tela, cor_quadrado_digitar_fixo, quadrado_digitar_fixo)
+    pygame.draw.rect(tela, cor_quadrado_digitar_nao_fixo, quadrado_digitar_nao_fixo)
+    #quadrado_digitar_nao_fixo.y += 2
+    #onde_digitar.y += 2
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
