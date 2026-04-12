@@ -79,8 +79,10 @@ cor_quadrado_digitar_fixo = "red"
 cor_quadrado_digitar_nao_fixo = "blue"
 VELOCIDADE_SCROLL = 5
 
-scroll_fixo = pygame.Rect(LARGURA - 25, 30, 25, ALTURA)
-cor_scroll_fixo = "#777070"
+scroll_fixo = pygame.Rect(LARGURA - 20, 30, 20, ALTURA)
+cor_scroll_fixo = "#AFA9A9"
+botao_scroll = pygame.Rect(LARGURA - 20, 30, 20, 40)
+cor_botao_scroll = "#585353"
 
 botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
@@ -425,6 +427,7 @@ def limpar_texto():
         {"texto": ""}
     ]
 
+
 rodando = True
 while rodando:
     for event in pygame.event.get():
@@ -522,12 +525,13 @@ while rodando:
         if event.type == pygame.MOUSEWHEEL:
             if pode_mexer:
                 if event.y > 0:
-                    if quadrado_digitar_nao_fixo.y >= 35:
+                        onde_digitar.y += VELOCIDADE_SCROLL
+                        quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
+                if event.y < 0:
+                    print(quadrado_digitar_nao_fixo.y)
+                    if quadrado_digitar_nao_fixo.y >= 30:
                         onde_digitar.y -= VELOCIDADE_SCROLL
                         quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
-                if event.y < 0:
-                    onde_digitar.y += VELOCIDADE_SCROLL
-                    quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
@@ -543,7 +547,11 @@ while rodando:
     pygame.draw.rect(tela, cor_quadrado_digitar_fixo, quadrado_digitar_fixo)
     pygame.draw.rect(tela, cor_quadrado_digitar_nao_fixo, quadrado_digitar_nao_fixo)
     
+    #SCROLL
     pygame.draw.rect(tela, cor_scroll_fixo, scroll_fixo)
+    pygame.draw.rect(tela, cor_botao_scroll, botao_scroll)
+
+    botao_scroll.y = quadrado_digitar_nao_fixo.y
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
@@ -600,6 +608,7 @@ while rodando:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
         tela.blit(texto_surface, (onde_digitar.x, y_distancia))
         y_distancia += fonte_texto.get_height()
+    
 
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
 
