@@ -73,10 +73,10 @@ arquivo_ja_salvo = False
 tempo_que_letra_foi_solta = 0
 tempo_backspace_solto = 0
 
-quadrado_digitar_fixo = pygame.Rect(0, 30, LARGURA, ALTURA)
+#quadrado_digitar_fixo = pygame.Rect(0, 30, LARGURA, ALTURA)
 quadrado_digitar_nao_fixo = pygame.Rect(0, 30, LARGURA, ALTURA)
-cor_quadrado_digitar_fixo = "red"
-cor_quadrado_digitar_nao_fixo = "blue"
+#cor_quadrado_digitar_fixo = "red"
+cor_quadrado_digitar_nao_fixo = "white"
 VELOCIDADE_SCROLL = 5
 
 scroll_fixo = pygame.Rect(LARGURA - 20, 30, 20, ALTURA)
@@ -531,7 +531,6 @@ while rodando:
                         quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
                         botao_scroll.y -= VELOCIDADE_SCROLL
                 if event.y < 0:
-                    print(quadrado_digitar_nao_fixo.y)
                     onde_digitar.y -= VELOCIDADE_SCROLL
                     quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
                     botao_scroll.y += VELOCIDADE_SCROLL
@@ -541,10 +540,8 @@ while rodando:
     posicao_mouse = pygame.mouse.get_pos()
 
     tela.fill("white")  
-    linha = pygame.draw.line(tela, ("gray"), (0, 30), (LARGURA, 30), 1)
 
     pygame.draw.rect(tela, "white", onde_digitar) 
-    pygame.draw.rect(tela, cor_quadrado_digitar_fixo, quadrado_digitar_fixo)
     pygame.draw.rect(tela, cor_quadrado_digitar_nao_fixo, quadrado_digitar_nao_fixo)
     
     #SCROLL
@@ -648,6 +645,7 @@ while rodando:
         pode_mexer = True
     
     pygame.draw.rect(tela, cor_barra_topo, barra_topo)
+    linha = pygame.draw.line(tela, ("gray"), (0, 30), (LARGURA, 30), 1)
     botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho = desenhar_botoes()
     desenhar_texto()
     
