@@ -84,7 +84,7 @@ cor_scroll_fixo = "#AFA9A9"
 botao_scroll = pygame.Rect(LARGURA - 20, 30, 20, 40)
 cor_botao_scroll = "#585353"
 
-barra_topo = pygame.Rect(0, LARGURA, 50, LARGURA)
+barra_topo = pygame.Rect(0, 0, LARGURA, 31)
 cor_barra_topo = "white"
 botoes_do_menu_aparecer = False
 menu_opcoes = pygame.Rect(0, 30, 250, 150) #Criei essa variavel para ser global e conseguir usar no IF do loop de eventos
@@ -529,10 +529,12 @@ while rodando:
                 if event.y > 0:
                         onde_digitar.y += VELOCIDADE_SCROLL
                         quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
+                        botao_scroll.y -= VELOCIDADE_SCROLL
                 if event.y < 0:
                     print(quadrado_digitar_nao_fixo.y)
                     onde_digitar.y -= VELOCIDADE_SCROLL
                     quadrado_digitar_nao_fixo.y -= VELOCIDADE_SCROLL
+                    botao_scroll.y += VELOCIDADE_SCROLL
     if nome_arquivo != None:
         pygame.display.set_caption(f"{nome_arquivo:.30} - PedroNote")
     fonte_texto = pygame.font.Font(caminho_fonte_texto, tamanho_fonte_texto)#Atualiza a fonte
@@ -549,7 +551,7 @@ while rodando:
     pygame.draw.rect(tela, cor_scroll_fixo, scroll_fixo)
     pygame.draw.rect(tela, cor_botao_scroll, botao_scroll)
 
-    botao_scroll.y = quadrado_digitar_nao_fixo.y
+    #botao_scroll.y = quadrado_digitar_nao_fixo.y
 
     y_distancia = onde_digitar.y #Serve pra criar a distancia de cada
 
@@ -606,10 +608,6 @@ while rodando:
         texto_surface = fonte_texto.render(linha["texto"], True, "black")
         tela.blit(texto_surface, (onde_digitar.x, y_distancia))
         y_distancia += fonte_texto.get_height()
-
-    pygame.draw.rect(tela, cor_barra_topo, barra_topo)
-    botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho = desenhar_botoes()
-    desenhar_texto()
     
 
     largura_texto, altura_texto = fonte_texto.size(linhas[linha_atual]["texto"])
@@ -648,6 +646,10 @@ while rodando:
         botao_salvar, botao_nao_salvar, botao_cancelar, botao_X_sair = criar_janela_de_saida()
     else:
         pode_mexer = True
+    
+    pygame.draw.rect(tela, cor_barra_topo, barra_topo)
+    botao_arquivo, botao_editar, botao_texto_fonte_mais, botao_texto_menos, caixa_fonte_tamanho = desenhar_botoes()
+    desenhar_texto()
     
 
     pygame.display.flip()   # atualiza a tela
