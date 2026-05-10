@@ -440,11 +440,9 @@ while rodando:
                 mostrar_janela_sair_salvar = True
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_RETURN:
-                #linhas.insert(linha_atual+1, "")
                 if pode_mexer:
                     linhas, linha_atual = pular_linha(linhas, linha_atual)
             elif event.key == pygame.K_BACKSPACE: #Apagar
-                #linhas[linha_atual]["texto"]= linhas[linha_atual]["texto"][:-1] 
                 if pode_mexer:
                     segurou_excluir = True
             else:
@@ -459,7 +457,6 @@ while rodando:
                     if event.key == pygame.K_UP or event.key == pygame.K_DOWN or event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
                         cursor_automatico = False
                         numero_seta = event.key
-                #linhas[linha_atual]["texto"] += event.unicode
         if event.type == pygame.KEYUP:
             if pode_mexer:
                 segurou = False
