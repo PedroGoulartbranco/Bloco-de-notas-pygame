@@ -523,7 +523,7 @@ while rodando:
                             botoes_do_menu_aparecer = abrir()
         if event.type == pygame.MOUSEWHEEL:
             if pode_mexer:
-                if event.y > 0:
+                if event.y > 0 and onde_digitar.y < 40:
                         onde_digitar.y += VELOCIDADE_SCROLL
                         quadrado_digitar_nao_fixo.y += VELOCIDADE_SCROLL
                         botao_scroll.y -= VELOCIDADE_SCROLL
