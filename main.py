@@ -27,7 +27,6 @@ icone = pygame.image.load("img/icon.ico")
 icone = pygame.transform.scale(icone, (256, 256))
 pygame.display.set_icon(icone)
 
-
 tamanho_fonte_texto = 22
 tamanho_fonte_aumentar_dominuir = 28
 fonte_atual = 'ARIAL.TTF'
@@ -64,6 +63,7 @@ tempo_botao_excluir_clicado = 0
 linha_vazia = False
 cursor_automatico = True
 numero_seta = 0
+sem_mudancas = True
 
 mostrar_janela_sair_salvar = False
 clicou_no_botao_novo = False
@@ -428,6 +428,11 @@ def limpar_texto():
     linhas = [
         {"texto": ""}
     ]
+
+def verificar_mudanca_arquivo(arquivo_caminho):
+    ver_tipo_arquivo = os.path.splitext(arquivo_caminho)
+    if ver_tipo_arquivo == ".txt":
+        pass
 
 
 rodando = True
